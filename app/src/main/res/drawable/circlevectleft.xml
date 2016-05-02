@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:height="64dp"
+    android:width="64dp"
+    android:viewportHeight="600"
+    android:viewportWidth="600" >
+
+    <path
+        android:name="circle"
+        android:fillColor="#fff"
+        android:pathData="  M600,0
+                            C600,0 600,600 0,600
+                            M0,600
+                            L600,600
+                            L600,0"
+        />
+</vector>
