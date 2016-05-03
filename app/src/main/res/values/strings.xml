@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">LSINF1225-Projet</string>
-<<<<<<< HEAD
     <string name="title_activity_settings">Settings</string>
 
     <!-- Strings related to Settings -->
@@ -74,7 +73,6 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-=======
     <string name="menu">Menu</string>
->>>>>>> origin/master
+    <string name="deco">Se déconnecter</string>
 </resources>
