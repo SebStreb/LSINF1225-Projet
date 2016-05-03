@@ -1,3 +1,5 @@
+package groupek.lsinf1225_projet;
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -113,13 +115,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP INDEX INDEX_PHOTO");
     }
 
-    public boolean open(){
+    public SQLiteDatabase open(){
         try{
-            getWritableDatabase();
+            return getWritableDatabase();
         } catch(SQLiteException e){
             System.err.print("Failure when trying to open database:" + this.DB_NAME);
-            return false;
+            return null;
         }
-        return true;
     }
 }
