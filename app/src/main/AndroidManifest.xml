@@ -21,6 +21,16 @@
         </activity>
         <activity android:name=".MenuActivity"></activity>
         <activity android:name=".MessagerieActivity" />
-    </application>
+        <activity android:name=".Contact">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Amis" />
+        <activity android:name=".Favoris" />
+        <activity android:name=".ProfilAmiFav"></activity>
+</application>
 
 </manifest>
