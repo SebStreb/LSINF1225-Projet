@@ -1,3 +1,5 @@
+package groupek.lsinf1225_projet;
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
