@@ -29,6 +29,7 @@ public class MenuActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, menu);
         ListView list = (ListView) findViewById(R.id.listView);
+        Button button = (Button) findViewById(R.id.button2);
         list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -58,7 +59,14 @@ public class MenuActivity extends AppCompatActivity {
                         startActivity(newActivity);
                         break;
                 }
-            };
+            }
+        });
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
         });
     }
 }
