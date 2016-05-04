@@ -23,6 +23,12 @@
         <activity android:name=".Favoris" />
         <activity android:name=".ProfilAmiFav" />
         <activity android:name=".ChatActivity" />
+        <activity android:name=".Browser">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
