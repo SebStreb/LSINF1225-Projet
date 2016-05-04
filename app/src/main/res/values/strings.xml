@@ -75,4 +75,8 @@
     </string>
     <string name="menu">Menu</string>
     <string name="deco">Se déconnecter</string>
+    <string name="send">Envoyer</string>
+    <string name="type">Tapez votre message</string>
+    <string name="me">Moi</string>
+    <string name="friend">Ami</string>
 </resources>
