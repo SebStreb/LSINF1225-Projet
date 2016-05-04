@@ -27,7 +27,7 @@ public class Profil {
         caracteristiques = new Hashtable<String,Object>();
         String [] donnees;
         donnees = searchDatabase(this.context);
-        //setDefault(caracteristiques); // TODO : aller chercher les carac dans la BDD SQLite
+        setCarac(caracteristiques,donnees); // TODO : aller chercher les carac dans la BDD SQLite
     }
 
     public Profil(int id){
@@ -37,9 +37,9 @@ public class Profil {
 
     /*
     * @pre : hash est une hashtable deja initialisee
-    * @post : insere les champs dans la hashtable, sans attribuer une valeur aux champs !!!
+    * @post : insere les champs dans la hashtable, qui correspondent aux caracteristiques de l'utilisateur
      */
-    private void setDefault(Hashtable<String,Object> hash, String[] data){
+    private void setCarac(Hashtable<String,Object> hash, String[] data){
         for(int i=0; i<carac.length; i++){
             hash.put(carac[i],data[i]);
         }

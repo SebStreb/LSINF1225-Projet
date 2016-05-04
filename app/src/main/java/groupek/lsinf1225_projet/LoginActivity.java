@@ -3,6 +3,7 @@ package groupek.lsinf1225_projet;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
@@ -339,7 +340,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             String [] result = new String [21];
 
             if (!(cursor.moveToFirst()) || cursor.getCount() == 0){ //the cursor is empty, which means SQL query returned nothing.
-                db.execSQL("insert into android.user (\n" +
+                db.execSQL("insert into user (\n" +
                         "  Login, \n" +
                         "  Pass,\n" +
                         "  Nom, \n" +
@@ -356,7 +357,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         "  Inclinaison, \n" +
                         "  Facebook, \n" +
                         "  langue)\n" +
-                        "values ("+emailAdd+","+passAdd+"'vide','vide','vide',0/0/0000,'vide','vide','vide',0,'vide','vide','vide','vide','vide','vide')");
+                        "values ("+emailAdd+","+passAdd+",'vide','vide','vide','1970-01-01','vide','vide','vide',0,'vide','vide','vide','vide','vide','vide')");
 
                 //add a new user without information about him/her
             } else {
@@ -375,7 +376,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                finish();
+                Intent newActivity = new Intent(LoginActivity.this, MenuActivity.class);
+                startActivity(newActivity);
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
