@@ -9,9 +9,12 @@ import android.widget.*;
 
 public class MenuActivity extends AppCompatActivity {
 
+    private int ID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ID = 1; //Récupérer depuis login
 
         Resources res = getResources();
         String[] menu = {
@@ -36,26 +39,41 @@ public class MenuActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 Intent newActivity;
+                Bundle b = new Bundle();
                 switch(position){
                     case 0:  newActivity = new Intent(MenuActivity.this, ProfilActivity.class);
+                        b.putInt("id", ID);
+                        newActivity.putExtras(b);
                         startActivity(newActivity);
                         break;
                     case 1:  newActivity = new Intent(MenuActivity.this, LoginActivity.class); //TODO: Add preferences
+                        b.putInt("id", ID);
+                        newActivity.putExtras(b);
                         startActivity(newActivity);
                         break;
-                    case 2:  newActivity = new Intent(MenuActivity.this, LoginActivity.class); //TODO: Add broswer
+                    case 2:  newActivity = new Intent(MenuActivity.this, Browser.class);
+                        b.putInt("id", ID);
+                        newActivity.putExtras(b);
                         startActivity(newActivity);
                         break;
                     case 3:  newActivity = new Intent(MenuActivity.this, Contact.class);
+                        b.putInt("id", ID);
+                        newActivity.putExtras(b);
                         startActivity(newActivity);
                         break;
                     case 4:  newActivity = new Intent(MenuActivity.this, LoginActivity.class); //TODO: Add demandes
+                        b.putInt("id", ID);
+                        newActivity.putExtras(b);
                         startActivity(newActivity);
                         break;
                     case 5:  newActivity = new Intent(MenuActivity.this, MessagerieActivity.class);
+                        b.putInt("id", ID);
+                        newActivity.putExtras(b);
                         startActivity(newActivity);
                         break;
                     case 6:  newActivity = new Intent(MenuActivity.this, MeetActivity.class);
+                        b.putInt("id", ID);
+                        newActivity.putExtras(b);
                         startActivity(newActivity);
                         break;
                 }
