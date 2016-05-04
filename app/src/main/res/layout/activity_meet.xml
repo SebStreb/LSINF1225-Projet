@@ -8,11 +8,12 @@
     android:paddingRight="0dp"
     android:paddingTop="0dp"
     android:background="#fff"
-    tools:context="groupek.lsinf1225_projet.Calendar">
+    tools:context="groupek.lsinf1225_projet.MeetActivity">
+
 
     <FrameLayout
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:id="@+id/frameLayout">
@@ -29,8 +30,8 @@
     </FrameLayout>
 
     <FrameLayout
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:id="@+id/frameLayout2">
@@ -52,30 +53,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Se rencontrer"
+        android:text="Disponible ?"
         android:id="@+id/textView2"
         android:layout_alignBottom="@+id/frameLayout"
-        android:layout_centerHorizontal="true"/>
-
-    <CalendarView
-        android:layout_width="fill_parent"
-        android:layout_height="280dp"
-        android:id="@+id/calendarF"
-
-        android:layout_below="@+id/textView2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-
-        android:firstDayOfWeek="0"
-        android:minDate="5/1/2016"
-        />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Je suis libre"
-        android:id="@+id/button"
-        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp" />
+        android:layout_marginBottom="10dp"/>
+
+    <LinearLayout
+        android:id="@+id/calendar1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true">
+    </LinearLayout>
+
 </RelativeLayout>
