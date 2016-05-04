@@ -1,6 +1,7 @@
 package groupek.lsinf1225_projet;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -8,19 +9,21 @@ import android.widget.*;
 
 public class MenuActivity extends AppCompatActivity {
 
-    public String[] menu = {
-            "Profil",
-            "Préférences",
-            "Browser",
-            "Contacts",
-            "Demandes",
-            "Messages",
-            "Rencontres"
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Resources res = getResources();
+        String[] menu = {
+                res.getString(R.string.profil),
+                res.getString(R.string.pref),
+                res.getString(R.string.browser),
+                res.getString(R.string.contacts),
+                res.getString(R.string.demandes),
+                res.getString(R.string.message),
+                res.getString(R.string.meet)
+        };
+
         setContentView(R.layout.activity_menu);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -55,7 +58,6 @@ public class MenuActivity extends AppCompatActivity {
                         startActivity(newActivity);
                         break;
                 }
-
             };
         });
     }
