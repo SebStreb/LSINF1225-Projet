@@ -28,7 +28,6 @@ public class MenuActivity extends AppCompatActivity {
                 res.getString(R.string.contacts),
                 res.getString(R.string.demandes),
                 res.getString(R.string.message),
-                res.getString(R.string.meet)
         };
 
         setContentView(R.layout.activity_menu);
@@ -55,7 +54,7 @@ public class MenuActivity extends AppCompatActivity {
                         newActivity.putExtras(b);
                         startActivity(newActivity);
                         break;
-                    case 2:  newActivity = new Intent(MenuActivity.this, Browser.class);
+                    case 2:  newActivity = new Intent(MenuActivity.this, BrowserActivity.class);
                         b.putInt("id", ID);
                         newActivity.putExtras(b);
                         startActivity(newActivity);
@@ -72,12 +71,6 @@ public class MenuActivity extends AppCompatActivity {
                         break;
                     case 5:  newActivity = new Intent(MenuActivity.this, MessagerieActivity.class);
                         b.putInt("id", ID);
-                        newActivity.putExtras(b);
-                        startActivity(newActivity);
-                        break;
-                    case 6:  newActivity = new Intent(MenuActivity.this, MeetActivity.class);
-                        b.putInt("myID", 1);
-                        b.putInt("hisID", 2);
                         newActivity.putExtras(b);
                         startActivity(newActivity);
                         break;
