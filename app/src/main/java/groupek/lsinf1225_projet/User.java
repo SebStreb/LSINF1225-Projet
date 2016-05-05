@@ -123,14 +123,16 @@ public class User {
         DatabaseHelper myHelper = new DatabaseHelper(con);
         SQLiteDatabase database =  myHelper.open();
         String[] param = {Integer.toString(ID1), Integer.toString(ID2)};
-        String query = "SELECT strftime('%s', d.Jour) FROM dispo d WHERE d.ID_from = ? AND d.ID_to = ?";
+        String query = "SELECT strftime('%s', d.Jour) AS \"timestamps\" FROM dispo d WHERE d.ID_from = ? AND d.ID_to = ?";
         Cursor cursor = database.rawQuery(query, param);
+        cursor.moveToFirst();
         Date[] donnees = new Date[cursor.getCount()];
         for (int i = 0; i < donnees.length; i++) {
             donnees[i] = new Date(cursor.getLong(0));
             cursor.moveToNext();
         }
         cursor.close();
+        database.close();
         return donnees;
     }
 
