@@ -16,10 +16,10 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle b = getIntent().getExtras();
-        ID = b.getInt("id"); //Récupérer depuis login
-        String login = b.getString("login");
-        User me = new User(this, login);
-        Log.wtf("ID", Integer.toString(me.getId()));
+        ID = b.getInt("id");
+        DatabaseHelper db = new DatabaseHelper(this);
+        UserTable user = db.getUser(ID);
+        Log.wtf("User", user.getLogin());
 
         Resources res = getResources();
         String[] menu = {
