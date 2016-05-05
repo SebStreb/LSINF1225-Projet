@@ -27,12 +27,18 @@ public class Contact extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
+                Bundle b = getIntent().getExtras();
+                int Id = b.getInt("id");
                 Intent newActivity;
                 switch(position){
                     case 0:  newActivity = new Intent(Contact.this, Amis.class);
+                        b.putInt("id", Id);
+                        newActivity.putExtras(b);
                         startActivity(newActivity);
                         break;
                     case 1:  newActivity = new Intent(Contact.this, Favoris.class);
+                        b.putInt("id", Id);
+                        newActivity.putExtras(b);
                         startActivity(newActivity);
                         break;
                 }
