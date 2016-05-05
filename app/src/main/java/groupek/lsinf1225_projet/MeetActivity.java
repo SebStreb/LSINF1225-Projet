@@ -118,16 +118,15 @@ public class MeetActivity extends AppCompatActivity {
         this.idFrom = b.getInt("myID");
         this.idTo = b.getInt("thisID");
 
-/*
         //initialising the hashtable and the colors of the calendar
         daysUser = new Hashtable<>();
         daysOther = new Hashtable<>();
-        Date userD[] = searchDatabase(this.context);
+        Date userD[] = User.dispo(this.idFrom, this.idTo, MeetActivity.this);
         for (Date d : userD) {
             daysUser.put(d.getTime(), true);
             caldroidFragment.setBackgroundDrawableForDate(blueUser, new Date(d.getTime()));
         }
-        Date userO[] = searchDatabase(this.context);
+        Date userO[] = User.dispo(this.idTo, this.idFrom, MeetActivity.this);
         for (Date d : userO) {
             daysOther.put(d.getTime(), true);
             if (daysUser.get(t) != null) {
@@ -136,7 +135,6 @@ public class MeetActivity extends AppCompatActivity {
                 caldroidFragment.setBackgroundDrawableForDate(blueOther, new Date(d.getTime()));
             }
         }
-*/
         caldroidFragment.refreshView();
 
         // Setup listener
@@ -147,6 +145,7 @@ public class MeetActivity extends AppCompatActivity {
             */
             @Override
             public void onSelectDate(Date date, View view) {
+                Log.wtf("Date: ",date.getTime()+"");
                 if (daysUser.get(date.getTime()) != null) {//the user has already click on this date
                     if (daysUser.get(date.getTime()) == true) {
                         if (daysOther.get(date.getTime()) != null && daysOther.get(date.getTime()) == true) {
