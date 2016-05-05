@@ -24,14 +24,16 @@ import android.widget.TextView;
 
 /**
  * Created by alexandre on 5/4/16.
+ * cette classe a pour but de gérer le menu déroulant de ProfilActivity, qui permet a
+ * un utilisateur de personnaliser ses données profil.
  */
 
 public class ExAdapter extends BaseExpandableListAdapter {
 
     private Context _context;
-    private List<String> _listDataHeader; // header titles
-    // child data in format of header title, child title
-    private HashMap<String, List<String>> _listDataChild;
+    private List<String> _listDataHeader; // titre des sections
+
+    private HashMap<String, List<String>> _listDataChild; // titre et contenu des sous-sections
 
     public ExAdapter(Context context, List<String> listDataHeader,
                                  HashMap<String, List<String>> listChildData) {
