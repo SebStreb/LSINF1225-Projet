@@ -13,13 +13,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "GroupeK_BDD.sqlite";
-    private static final int DB_VERSION = 1;
-    private static Context context;
-
+    private static final int DB_VERSION = 2;
 
     public DatabaseHelper(Context context){
         super(context,DB_NAME,null,DB_VERSION);
-        this.context = context;
     }
 
 
@@ -28,20 +25,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "\tID integer auto_increment primary key unique,\n" +
                 "\tLogin char not null unique,\n" +
                 "\tPass char not null,\n" +
-                "\tNom char not null,\n" +
-                "\tPrenom char not null,\n" +
-                "\tGenre char not null,\n" +
-                "\tAge datetime not null,\n" +
-                "\tCheveux char not null,\n" +
-                "\tYeux char not null,\n" +
-                "\tRue char not null,\n" +
-                "\tCodePost integer not null,\n" +
-                "\tLocalite char not null,\n" +
-                "\tPays char not null,\n" +
-                "\tTelephone char not null,\n" +
-                "\tInclinaison char not null,\n" +
-                "\tFacebook char,\n" +
-                "\tLangue char not null,\n" +
+                "\tNom char not null default 'vide',\n" +
+                "\tPrenom char not null default 'vide',\n" +
+                "\tGenre char not null default 'vide',\n" +
+                "\tAge datetime not null default '1970-01-01',\n" +
+                "\tCheveux char not null default 'vide',\n" +
+                "\tYeux char not null default 'vide',\n" +
+                "\tRue char not null default 'vide',\n" +
+                "\tCodePost integer not null defalut 0,\n" +
+                "\tLocalite char not null default 'vide',\n" +
+                "\tPays char not null default 'vide',\n" +
+                "\tTelephone char not null default 'vide',\n" +
+                "\tInclinaison char not null default 'vide',\n" +
+                "\tFacebook char default 'vide',\n" +
+                "\tLangue char not null default 'vide',\n" +
                 "\tCacher_nom bool not null default true,\n" +
                 "\tCacher_adresse bool not null default true,\n" +
                 "\tCacher_telephone bool not null default true,\n" +
@@ -96,6 +93,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "\tforeign key (ID_user1) references user,\n" +
                 "\tforeign key (ID_user2) references user\n" +
                 ");");
+
+        db.execSQL("INSERT OR REPLACE INTO user(Login, Pass, Nom, Prenom) VALUES " +
+                "('sebstreb@yolo.be', 'Yolo1234', 'Strebelle', 'Sebastien)");
+        db.execSQL("INSERT OR REPLACE INTO user(Login, Pass, Nom, Prenom) VALUES " +
+                "('pierreort@yolo.be', 'Yolo1234', 'Ortegat', 'Pierre)");
+        db.execSQL("INSERT OR REPLACE INTO user(Login, Pass, Nom, Prenom) VALUES " +
+                "('alexrucq@yolo.be', 'Yolo1234', 'Rucquoy', 'Alexandre)");
+        db.execSQL("INSERT OR REPLACE INTO user(Login, Pass, Nom, Prenom) VALUES " +
+                "('antoinepop@yolo.be', 'Yolo1234', 'Popeler', 'Antoine)");
+        db.execSQL("INSERT OR REPLACE INTO user(Login, Pass, Nom, Prenom) VALUES " +
+                "('damienvan@yolo.be', 'Yolo1234', 'Vaneberk', 'Damien)");
+        db.execSQL("INSERT OR REPLACE INTO user(Login, Pass, Nom, Prenom) VALUES " +
+                "('angmerk@yolo.be', 'Yolo1234', 'Merkel', 'Angela)");
+        db.execSQL("INSERT OR REPLACE INTO user(Login, Pass, Nom, Prenom) VALUES " +
+                "('scarjo@yolo.be', 'Yolo1234', 'Johanson', 'Scarlet)");
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion ){ //en cas de modification majeure dans la bdd, supprime tout et reconstruit tout en incrementant DB_VERSION (SQLite oblige -_-)
