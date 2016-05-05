@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ProfilAmiFav extends AppCompatActivity {
     private Context context;
@@ -102,5 +103,7 @@ public class ProfilAmiFav extends AppCompatActivity {
         param[0] = String.valueOf(IdAmi);
         String requete = "UPDATE relations SET EtatReq = 1 WHERE ID_from = "+IdUser+" and ID_to = "+IdAmi+";";
         database.execSQL(requete);
+        Toast.makeText(getApplicationContext(),
+                "Ajoute en favoris !", Toast.LENGTH_LONG).show();
     }
 }

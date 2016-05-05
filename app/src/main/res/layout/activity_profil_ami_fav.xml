@@ -13,10 +13,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/listView3"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/imageView2"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="120dp" />
+        android:layout_alignParentStart="true" />
 
     <ImageView
         android:layout_width="200dp"
@@ -31,7 +30,7 @@
         android:layout_height="wrap_content"
         android:text="@string/favoris"
         android:id="@+id/button3"
-        android:layout_alignBottom="@+id/listView3"
+        android:layout_alignBottom="@+id/imageView2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -40,7 +39,7 @@
         android:layout_height="wrap_content"
         android:text="@string/rencontre"
         android:id="@+id/button4"
-        android:layout_alignBottom="@+id/listView3"
-        android:layout_alignRight="@+id/listView3"
-        android:layout_alignEnd="@+id/listView3" />
+        android:layout_alignTop="@+id/imageView2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>
