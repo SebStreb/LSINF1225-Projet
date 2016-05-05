@@ -3,6 +3,7 @@ package groupek.lsinf1225_projet;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.*;
 
@@ -11,7 +12,7 @@ public class User {
     private Context context;
     private int id;
     private Hashtable<String,Object> caracteristiques;
-    private static final String[] carac = {"Nom","Prenom","Genre","Age","Cheveux","Yeux","Rue","Code Postal","Localite","Pays","Telephone","Inclinaison","Facebook","Langue(s)"};
+    private static final String[] carac = {"Nom","Prenom","Genre","Age","Cheveux","Yeux","Rue","CodePost","Localite","Pays","Telephone","Inclinaison","Facebook","Langue(s)"};
 
 
     public User(Context con, int id){
@@ -41,7 +42,7 @@ public class User {
     public void save() {
         DatabaseHelper myHelper = new DatabaseHelper(context);
         SQLiteDatabase database =  myHelper.open();
-        String query = "REPLACE INTO user(Nom, Prenom, Genre, Age, Cheveux, Yeux, Rue, Code Postal, Localite, Pays, Telephone, Inclinaison, Facebook, Langue) VALUES("
+        String query = "REPLACE INTO user(Nom, Prenom, Genre, Age, Cheveux, Yeux, Rue, CodePost, Localite, Pays, Telephone, Inclinaison, Facebook, Langue) VALUES("
                 + "'"+getOpt("Nom")+"',"
                 + "'"+getOpt("Prenom")+"',"
                 + "'"+getOpt("Genre")+"',"
@@ -64,9 +65,9 @@ public class User {
         SQLiteDatabase database =  myHelper.open();
         String [] param = new String [1];
         param[0] = String.valueOf(id);
-        Cursor cursor = database.rawQuery("SELECT * FROM user WHERE ID = ? ", param);
-        String [] donnees = new String [21];
-        for(int i=0; i< donnees.length; i++){
+        Cursor cursor = database.rawQuery("SELECT Nom, Prenom, Genre, Age, Cheveux, Yeux, Rue, CodePost, Localite, Pays, Telephone, Inclinaison, Facebook, Langue FROM user WHERE ID = ? ", param);
+        String [] donnees = new String [14];
+        for(int i=0; i<donnees.length; i++){
             donnees[i]=cursor.getString(i);
         }
         cursor.close();
@@ -94,5 +95,15 @@ public class User {
         return list.toArray(new String[list.size()]);
     }
 
+    public static int find(String prenom, String nom, Context con) {
+        DatabaseHelper myHelper = new DatabaseHelper(con);
+        SQLiteDatabase database =  myHelper.open();
+        String[] param = {prenom, nom};
+        String query = "SELECT ID FROM user WHERE Prenom = ? AND Nom = ?";
+        Cursor cursor = database.rawQuery(query, param);
+        int ID = cursor.getInt(0);
+        cursor.close();
+        return ID;
+    }
 
 }
