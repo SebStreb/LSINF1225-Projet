@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.*;
 
@@ -16,6 +17,9 @@ public class MenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Bundle b = getIntent().getExtras();
         ID = b.getInt("id"); //Récupérer depuis login
+        String login = b.getString("login");
+        User me = new User(this, login);
+        Log.wtf("ID", Integer.toString(me.getId()));
 
         Resources res = getResources();
         String[] menu = {

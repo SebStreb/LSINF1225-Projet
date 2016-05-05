@@ -25,6 +25,24 @@ public class User {
             setOpt(carac[i], data[i]);
     }
 
+    public  User(Context con, String login) {
+        DatabaseHelper myHelper = new DatabaseHelper(con);
+        SQLiteDatabase database =  myHelper.open();
+        String[] param = {login};
+        String query = "SELECT ID FROM user WHERE Login = ?";
+        Cursor cursor = database.rawQuery(query, param);
+        cursor.moveToFirst();
+        int id = cursor.getInt(0);
+        cursor.close();
+        database.close();
+        this.id = id;
+        this.context = con;
+        caracteristiques = new Hashtable<String,Object>();
+        String[] data = searchDatabase();
+        for (int i = 0; i < carac.length; i++)
+            setOpt(carac[i], data[i]);
+    }
+
     public User(Context con, String prenom, String nom) {
         DatabaseHelper myHelper = new DatabaseHelper(con);
         SQLiteDatabase database =  myHelper.open();
