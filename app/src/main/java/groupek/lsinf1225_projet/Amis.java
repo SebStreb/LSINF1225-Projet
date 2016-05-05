@@ -32,11 +32,15 @@ public class Amis extends AppCompatActivity {
         return this.name;
     }
 
+    public int getId () {return this.Id;}
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        Amis[] listAmi;
-        listAmi = listeAmis(1);
+        Amis pote = new Amis("Bob", 42);
+        final Amis[] listAmi = new Amis[1];
+        //listAmi = listeAmis(1);
+        listAmi[0] = pote;
+        
         String[] listNom = new String[listAmi.length];
         for (int i = 0; i < listNom.length; i++) {
             listNom[i] = listAmi[i].getNom();
@@ -51,11 +55,14 @@ public class Amis extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                 String test = (String) list.getItemAtPosition(position);
+
+                Bundle b2 = getIntent().getExtras();
+                int Id = b2.getInt("id");
                 Intent intent = new Intent(Amis.this, ProfilAmiFav.class);
                 Bundle b = new Bundle();
-                b.putString("nom", test); //Your id
-                intent.putExtras(b); //Put your id to your next Intent
+                b.putString("idAmi",String.valueOf(listAmi[position].getId()));
+                b.putInt("idUser", Id);
+                intent.putExtras(b);
                 startActivity(intent);
             };
 
@@ -69,7 +76,7 @@ public class Amis extends AppCompatActivity {
         SQLiteDatabase database =  myHelper.open();
         String [] param = new String [1];
         param[0] = String.valueOf(IdUtilisateur);
-        String requete = "SELECT DISTINCT U.ID FROM user U, relations R WHERE (U.ID = ID_to and R.ID_from = ? and R.EtatReq = ?) or ( U.ID = R.ID_from and R.ID_to = ? and R.EtatReq = ?);";
+        String requete = "SELECT DISTINCT U.ID FROM user U, relations R WHERE (U.ID = ID_to and R.ID_from = ? and R.EtatReq = 1) or ( U.ID = R.ID_from and R.ID_to = ? and R.EtatReq = 1);";
         Cursor cursor = database.rawQuery(requete, param);
         int IdAmi;
         Amis ami;
@@ -84,7 +91,11 @@ public class Amis extends AppCompatActivity {
             String nomPrenom = nom+" "+prenom;
             ami = new Amis(nomPrenom, IdAmi);
             list.add(ami);
+            cursor2.close();
+            cursor3.close();
         }
+        cursor.close();
+
         Amis[] tab = list.toArray(new Amis[list.size()]);
         return tab;
     }

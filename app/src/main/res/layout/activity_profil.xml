@@ -11,13 +11,25 @@
 
     <TextView
         android:layout_width="200dp"
-        android:layout_height="100dp"
-        android:text="Nom et Prenom"
+        android:layout_height="wrap_content"
+        android:text="Nom"
         android:id="@+id/textView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:textAlignment="center"
         android:textSize="25sp" />
+
+    <TextView
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Prenom"
+        android:id="@+id/textViewPrenom"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="23dp" />
 
     <ImageButton
         android:layout_width="150dp"
@@ -54,10 +66,11 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="18/07/1996"
         android:id="@+id/textView2"
-        android:layout_below="@+id/textView"
+        android:paddingLeft="10dp"
+        android:layout_marginTop="31dp"
+        android:layout_below="@+id/textViewPrenom"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:paddingLeft="10dp"/>
+        android:layout_alignParentStart="true" />
 
 
 </RelativeLayout>

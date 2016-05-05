@@ -86,4 +86,6 @@
     <string name="demandes">Demandes</string>
     <string name="message">Messages</string>
     <string name="meet">Rencontres</string>
+    <string name="favoris">Favoris</string>
+    <string name="rencontre">Rencontre</string>
 </resources>

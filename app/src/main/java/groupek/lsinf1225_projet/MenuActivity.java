@@ -14,7 +14,8 @@ public class MenuActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ID = 1; //Récupérer depuis login
+        Bundle b = getIntent().getExtras();
+        ID = b.getInt("id"); //Récupérer depuis login
 
         Resources res = getResources();
         String[] menu = {
