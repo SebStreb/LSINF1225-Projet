@@ -118,11 +118,10 @@ public class MeetActivity extends AppCompatActivity {
             this.idTo = (int) savedInstanceState.get("thisID");
         }
         else{
-            this.idFrom = -1;
-            this.idTo = -1;
+            this.idFrom = 1;
+            this.idTo = 2;
         }
 
-/*
         //initialising the hashtable and the colors of the calendar
         daysUser = new Hashtable<>();
         daysOther = new Hashtable<>();
@@ -140,7 +139,7 @@ public class MeetActivity extends AppCompatActivity {
                 caldroidFragment.setBackgroundDrawableForDate(blueOther, new Date(d.getTime()));
             }
         }
-*/
+
         caldroidFragment.refreshView();
 
         // Setup listener
@@ -155,15 +154,19 @@ public class MeetActivity extends AppCompatActivity {
                     if (daysUser.get(date.getTime()) == true) {
                         if (daysOther.get(date.getTime()) != null && daysOther.get(date.getTime()) == true) {
                             caldroidFragment.setBackgroundDrawableForDate(blueOther, date);
+                            Log.wtf("Meet: ","\tPr - In - Ot");
                         } else {
                             caldroidFragment.clearBackgroundDrawableForDate(date);
+                            Log.wtf("Meet: ","\tPr - In - NOt");
                         }
                         daysUser.put(date.getTime(), false);
                     } else {
                         if (daysOther.get(date.getTime()) != null && daysOther.get(date.getTime()) == true) {
                             caldroidFragment.setBackgroundDrawableForDate(blueOther, date);
+                            Log.wtf("Meet: ","\tPr - NIn - Ot");
                         } else {
                             caldroidFragment.setBackgroundDrawableForDate(blueUser, date);
+                            Log.wtf("Meet: ","\tPr - NIn - NOt");
                         }
                         daysUser.put(date.getTime(), true);
                     }
@@ -171,8 +174,10 @@ public class MeetActivity extends AppCompatActivity {
                     daysUser.put(date.getTime(), true);
                     if (daysOther.get(date.getTime()) != null && daysOther.get(date.getTime()) == true) {
                         caldroidFragment.setBackgroundDrawableForDate(blueOther, date);
+                        Log.wtf("Meet: ","\tNPr - NIn - Ot");
                     } else {
                         caldroidFragment.setBackgroundDrawableForDate(blueUser, date);
+                        Log.wtf("Meet: ","\tNPr - NIn - NOt");
                     }
                 }
                 caldroidFragment.refreshView();
