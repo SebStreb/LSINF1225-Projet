@@ -21,11 +21,12 @@ public class MessagerieActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        con = this;
-        Bundle b = getIntent().getExtras();
-        ID = b.getInt("id");
         setContentView(R.layout.activity_messagerie);
-        String[] amis = listeAmis();
+        Bundle b = getIntent().getExtras();
+        con = this;
+        ID = b.getInt("id");
+        User me = new User(this, ID);
+        String[] amis = me.listeAmis();
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, amis);
         final ListView list = (ListView) findViewById(R.id.listView2);
@@ -41,38 +42,11 @@ public class MessagerieActivity extends AppCompatActivity {
                 Bundle b = new Bundle();
                 b.putString("nom", prenom);
                 b.putInt("myID", ID); //Mettre mon ID
-                DatabaseHelper myHelper = new DatabaseHelper(con);
-                SQLiteDatabase database =  myHelper.open();
-                String[] param = {prenom, nom};
-                String query = "SELECT ID FROM user WHERE Prenom = ? AND Nom = ?";
-                Cursor cursor = database.rawQuery(query, param);
-                b.putInt("hisID", cursor.getInt(0));
-                cursor.close();
+                b.putInt("hisID", User.find(prenom, nom, con));
                 intent.putExtras(b);
                 startActivity(intent);
             }
 
         });
-    }
-
-    public String[] listeAmis() {
-        DatabaseHelper myHelper = new DatabaseHelper(this);
-        SQLiteDatabase database =  myHelper.open();
-        String[] param = {Integer.toString(ID)};
-        String query = "SELECT DISTINCT U.ID FROM user U, relations R WHERE (U.ID = ID_to and R.ID_from = ? and R.EtatReq = ?) or ( U.ID = R.ID_from and R.ID_to = ? and R.EtatReq = ?);";
-        Cursor cursor = database.rawQuery(query, param);
-        ArrayList<String> list = new ArrayList<String>();
-        while (!cursor.isAfterLast()) {
-            int IdAmi = cursor.getInt(0);
-            String[] param2 = {Integer.toString(IdAmi)};
-            Cursor cursor2 = database.rawQuery("SELECT Prenom, Nom FROM user WHERE ID = ?;", param2);
-            String prenom = cursor2.getString(0);
-            String nom = cursor2.getString(1);
-            cursor2.close();
-            String nomPrenom = prenom+" "+nom;
-            list.add(nomPrenom);
-            cursor.moveToNext();
-        }
-        return list.toArray(new String[list.size()]);
     }
 }

@@ -46,7 +46,7 @@ public class MenuActivity extends AppCompatActivity {
                         newActivity.putExtras(b);
                         startActivity(newActivity);
                         break;
-                    case 1:  newActivity = new Intent(MenuActivity.this, LoginActivity.class); //TODO: Add preferences
+                    case 1:  newActivity = new Intent(MenuActivity.this, LoginActivity.class); //TODO: Add settings
                         b.putInt("id", ID);
                         newActivity.putExtras(b);
                         startActivity(newActivity);
@@ -72,7 +72,8 @@ public class MenuActivity extends AppCompatActivity {
                         startActivity(newActivity);
                         break;
                     case 6:  newActivity = new Intent(MenuActivity.this, MeetActivity.class);
-                        b.putInt("id", ID);
+                        b.putInt("myID", ID);
+                        b.putInt("hisID", 1);
                         newActivity.putExtras(b);
                         startActivity(newActivity);
                         break;

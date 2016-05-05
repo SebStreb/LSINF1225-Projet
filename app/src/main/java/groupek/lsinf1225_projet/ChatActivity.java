@@ -4,15 +4,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.text.DateFormat;
@@ -20,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 
-public class ChatActivity extends ActionBarActivity {
+public class ChatActivity extends AppCompatActivity {
 
     private EditText messageET;
     private ListView messagesContainer;
