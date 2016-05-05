@@ -9,68 +9,151 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="groupek.lsinf1225_projet.ProfilActivity">
 
-    <TextView
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:text="Nom"
-        android:id="@+id/textView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:textAlignment="center"
-        android:textSize="25sp" />
-
-    <TextView
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:text="Prenom"
-        android:id="@+id/textViewPrenom"
-        android:textAlignment="center"
-        android:textSize="25sp"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="23dp" />
-
     <ImageButton
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:id="@+id/imageButton"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/textView"
-        android:layout_toEndOf="@+id/textView"
         android:clickable="true"
-        android:src="@drawable/merkel" />
+        android:src="@drawable/merkel"
+        android:layout_alignRight="@+id/expandableListView"
+        android:layout_alignEnd="@+id/expandableListView" />
 
     <Button
         android:text="Enregistrer et quitter"
         android:id="@+id/button"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:layout_below="@+id/imageButton"
-        android:layout_alignRight="@+id/textView"
-        android:layout_alignEnd="@+id/textView"
-        android:layout_marginTop="275dp" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
     <ExpandableListView
         android:paddingTop="10dp"
-        android:layout_width="330dp"
+        android:layout_width="200dp"
         android:layout_height="270dp"
         android:id="@+id/expandableListView"
-        android:layout_below="@+id/imageButton"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignTop="@+id/editTextLogin"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/editTextPhone" />
 
-    <TextView
-        android:layout_width="120dp"
+    <EditText
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="18/07/1996"
-        android:id="@+id/textView2"
-        android:paddingLeft="10dp"
-        android:layout_marginTop="31dp"
-        android:layout_below="@+id/textViewPrenom"
+        android:id="@+id/editText"
+        android:hint="localité"
+        android:layout_above="@+id/editTextPhone"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/editText2"
+        android:layout_alignEnd="@+id/editText2" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPostalAddress"
+        android:ems="10"
+        android:hint="adresse"
+        android:id="@+id/editText2"
+        android:layout_above="@+id/editText"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/expandableListView"
+        android:layout_toStartOf="@+id/expandableListView" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="Nom"
+        android:ems="10"
+        android:id="@+id/editTextNom"
+        android:layout_alignTop="@+id/imageButton"
+        android:layout_alignLeft="@+id/button"
+        android:layout_alignStart="@+id/button"
+        android:layout_toLeftOf="@+id/imageButton"
+        android:layout_toStartOf="@+id/imageButton" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="Prenom"
+        android:ems="10"
+        android:id="@+id/editTextPrenom"
+        android:layout_below="@+id/editTextNom"
+        android:layout_alignLeft="@+id/editTextNom"
+        android:layout_alignStart="@+id/editTextNom"
+        android:layout_alignRight="@+id/editTextNom"
+        android:layout_alignEnd="@+id/editTextNom" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="date"
+        android:ems="10"
+        android:hint="Age"
+        android:id="@+id/editTextDate"
+        android:layout_below="@+id/editTextPrenom"
+        android:layout_alignLeft="@+id/editTextPrenom"
+        android:layout_alignStart="@+id/editTextPrenom"
+        android:layout_alignRight="@+id/editTextPrenom"
+        android:layout_alignEnd="@+id/editTextPrenom" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:ems="10"
+        android:id="@+id/editTextLogin"
+        android:hint="Login"
+        android:layout_above="@+id/editText3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/expandableListView"
+        android:layout_toStartOf="@+id/expandableListView" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:hint="Password"
+        android:id="@+id/editText3"
+        android:layout_toLeftOf="@+id/expandableListView"
+        android:layout_toStartOf="@+id/expandableListView"
+        android:layout_above="@+id/editTextCP" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editTextCP"
+        android:hint="CP"
+        android:layout_toLeftOf="@+id/expandableListView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/editText2" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="phone"
+        android:ems="10"
+        android:hint="Phone"
+        android:id="@+id/editTextPhone"
+        android:layout_alignTop="@+id/editTextFacebook"
+        android:layout_toLeftOf="@+id/expandableListView"
+        android:layout_toStartOf="@+id/expandableListView" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editTextFacebook"
+        android:hint="Facebook"
+        android:layout_above="@+id/button"
+        android:layout_alignLeft="@+id/imageButton"
+        android:layout_alignStart="@+id/imageButton"
+        android:layout_alignRight="@+id/button"
+        android:layout_alignEnd="@+id/button" />
 
 
 </RelativeLayout>
