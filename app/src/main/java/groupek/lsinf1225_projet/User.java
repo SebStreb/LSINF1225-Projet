@@ -66,8 +66,11 @@ public class User {
         String [] param = new String [1];
         param[0] = String.valueOf(id);
         Cursor cursor = database.rawQuery("SELECT Nom, Prenom, Genre, Age, Cheveux, Yeux, Rue, CodePost, Localite, Pays, Telephone, Inclinaison, Facebook, Langue FROM user WHERE ID = ? ", param);
+        cursor.moveToFirst();
         String [] donnees = new String [14];
         for(int i=0; i<donnees.length; i++){
+            if (i==7)
+                donnees[i]=Integer.toString(cursor.getInt(i));
             donnees[i]=cursor.getString(i);
         }
         cursor.close();
@@ -80,11 +83,13 @@ public class User {
         String[] param = {Integer.toString(id)};
         String query = "SELECT DISTINCT U.ID FROM user U, relations R WHERE (U.ID = ID_to and R.ID_from = ? and R.EtatReq = ?) or ( U.ID = R.ID_from and R.ID_to = ? and R.EtatReq = ?);";
         Cursor cursor = database.rawQuery(query, param);
+        cursor.moveToFirst();
         ArrayList<String> list = new ArrayList<String>();
         while (!cursor.isAfterLast()) {
             int IdAmi = cursor.getInt(0);
             String[] param2 = {Integer.toString(IdAmi)};
             Cursor cursor2 = database.rawQuery("SELECT Prenom, Nom FROM user WHERE ID = ?;", param2);
+            cursor2.moveToFirst();
             String prenom = cursor2.getString(0);
             String nom = cursor2.getString(1);
             cursor2.close();
@@ -102,6 +107,7 @@ public class User {
         String[] param = {prenom, nom};
         String query = "SELECT ID FROM user WHERE Prenom = ? AND Nom = ?";
         Cursor cursor = database.rawQuery(query, param);
+        cursor.moveToFirst();
         int ID = cursor.getInt(0);
         cursor.close();
         return ID;

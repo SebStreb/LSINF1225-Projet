@@ -22,6 +22,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -316,8 +317,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             String [] param = new String [2]; // email et password, qu'on passera a rawQuery
             param[0]= mEmail;
             param[1]= mPassword;
-            String emailAdd = "'"+mEmail+"'"; //emailAdd et passAdd sont la uniquement pour rendre le code plus clair (cfr la requete insert juste en dessous :-) )
-            String passAdd = "'"+mPassword+"'";
 
             Cursor cursor = db.rawQuery("SELECT * FROM user WHERE user.Login = ? AND user.Pass = ?",param);
             String [] result = new String [21];
@@ -327,20 +326,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             "  Login, \n" +
                             "  Pass,\n" +
                             "  Nom, \n" +
-                            "  Prenom, \n" +
-                            "  Genre, \n" +
-                            "  Age, \n" +
-                            "  Cheveux, \n" +
-                            "  Yeux, \n" +
-                            "  Rue, \n" +
-                            "  CodePost, \n" +
-                            "  Localite, \n" +
-                            "  Pays, \n" +
-                            "  Telephone, \n" +
-                            "  Inclinaison, \n" +
-                            "  Facebook, \n" +
-                            "  langue)\n" +
-                            "values (" + emailAdd + "," + passAdd + ",'vide','vide','vide','1970-01-01','vide','vide','vide',0,'vide','vide','vide','vide','vide','vide')");
+                            "  Prenom)\n" +
+                            "values (" + "'"+mEmail+"'," + "'"+mPassword+"'," + "'vide','vide')");
 
                     // seems to work
                     //add a new user without information about him/her
@@ -354,7 +341,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
             this.userCarac = result;//on assigne ledit tableau a userCarac, qui representera les caracteristiques d'un utilisateur
             Cursor cursor2 = db.rawQuery("SELECT ID FROM user WHERE user.Login = ? AND user.Pass = ?",param);
-            this.id = Integer.valueOf(cursor2.getString(0));
+            cursor2.moveToFirst();
+            this.id = cursor2.getInt(0);
             cursor.close();
             cursor2.close();
             return true;
