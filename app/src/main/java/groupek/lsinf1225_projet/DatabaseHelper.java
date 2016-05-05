@@ -110,24 +110,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT OR REPLACE INTO user(Login, Pass, Nom, Prenom) VALUES " +
                 "('scarjo@yolo.be', 'Yolo1234', 'Johanson', 'Scarlet')");
 
+        db.execSQL("INSERT OR IGNORE INTO dispo VALUES (2,1,'2016-05-01 22:00:00')");
+        db.execSQL("INSERT OR IGNORE INTO dispo VALUES (2,1,'2016-05-03 22:00:00')");
+        db.execSQL("INSERT OR IGNORE INTO dispo VALUES (2,1,'2016-05-04 22:00:00')");
+        db.execSQL("INSERT OR IGNORE INTO dispo VALUES (2,1,'2016-05-07 22:00:00')");
+        db.execSQL("INSERT OR IGNORE INTO dispo VALUES (2,1,'2016-05-09 22:00:00')");
+        db.execSQL("INSERT OR IGNORE INTO dispo VALUES (2,1,'2016-05-12 22:00:00')");
+        db.execSQL("INSERT OR IGNORE INTO dispo VALUES (2,1,'2016-05-17 22:00:00')");
 
-        db.execSQL("INSERT OR IGNORE INTO dispo VALUES (2,1,'2016-05-01 12:00:00')");
-        db.execSQL("INSERT OR IGNORE INTO dispo VALUES (2,1,'2016-05-03 12:00:00')");
-        db.execSQL("INSERT OR IGNORE INTO dispo VALUES (2,1,'2016-05-04 12:00:00')");
-        db.execSQL("INSERT OR IGNORE INTO dispo VALUES (2,1,'2016-05-07 12:00:00')");
-        db.execSQL("INSERT OR IGNORE INTO dispo VALUES (2,1,'2016-05-09 12:00:00')");
-        db.execSQL("INSERT OR IGNORE INTO dispo VALUES (2,1,'2016-05-12 12:00:00')");
-        db.execSQL("INSERT OR IGNORE INTO dispo VALUES (2,1,'2016-05-17 12:00:00')");
-
-        db.execSQL("INSERT OR IGNORE INTO dispo VALUES (2,1,'2016-05-02 12:00:00')");
-        db.execSQL("INSERT OR IGNORE INTO dispo VALUES (2,1,'2016-05-07 12:00:00')");
-        db.execSQL("INSERT OR IGNORE INTO dispo VALUES (2,1,'2016-05-08 12:00:00')");
-        db.execSQL("INSERT OR IGNORE INTO dispo VALUES (2,1,'2016-05-09 12:00:00')");
-        db.execSQL("INSERT OR IGNORE INTO dispo VALUES (2,1,'2016-05-10 12:00:00')");
-        db.execSQL("INSERT OR IGNORE INTO dispo VALUES (2,1,'2016-05-11 12:00:00')");
-        db.execSQL("INSERT OR IGNORE INTO dispo VALUES (2,1,'2016-05-12 12:00:00')");
-        db.execSQL("INSERT OR IGNORE INTO dispo VALUES (2,1,'2016-05-15 12:00:00')");
-        db.execSQL("INSERT OR IGNORE INTO dispo VALUES (2,1,'2016-05-17 12:00:00')");
+        db.execSQL("INSERT OR IGNORE INTO dispo VALUES (1,2,'2016-05-02 22:00:00')");
+        db.execSQL("INSERT OR IGNORE INTO dispo VALUES (1,2,'2016-05-07 22:00:00')");
+        db.execSQL("INSERT OR IGNORE INTO dispo VALUES (1,2,'2016-05-08 22:00:00')");
+        db.execSQL("INSERT OR IGNORE INTO dispo VALUES (1,2,'2016-05-09 22:00:00')");
+        db.execSQL("INSERT OR IGNORE INTO dispo VALUES (1,2,'2016-05-10 22:00:00')");
+        db.execSQL("INSERT OR IGNORE INTO dispo VALUES (1,2,'2016-05-11 22:00:00')");
+        db.execSQL("INSERT OR IGNORE INTO dispo VALUES (1,2,'2016-05-12 22:00:00')");
+        db.execSQL("INSERT OR IGNORE INTO dispo VALUES (1,2,'2016-05-15 22:00:00')");
+        db.execSQL("INSERT OR IGNORE INTO dispo VALUES (1,2,'2016-05-17 22:00:00')");
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion ){ //en cas de modification majeure dans la bdd, supprime tout et reconstruit tout en incrementant DB_VERSION (SQLite oblige -_-)

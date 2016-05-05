@@ -72,8 +72,8 @@ public class MenuActivity extends AppCompatActivity {
                         startActivity(newActivity);
                         break;
                     case 6:  newActivity = new Intent(MenuActivity.this, MeetActivity.class);
-                        b.putInt("myID", ID);
-                        b.putInt("hisID", 1);
+                        b.putInt("myID", 1);
+                        b.putInt("hisID", 2);
                         newActivity.putExtras(b);
                         startActivity(newActivity);
                         break;

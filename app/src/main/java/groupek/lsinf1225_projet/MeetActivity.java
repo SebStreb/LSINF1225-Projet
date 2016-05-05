@@ -125,12 +125,12 @@ public class MeetActivity extends AppCompatActivity {
         //initialising the hashtable and the colors of the calendar
         daysUser = new Hashtable<>();
         daysOther = new Hashtable<>();
-        Date userD[] = searchDatabase(this.idFrom, this.idTo);
+        Date userD[] = User.dispo(this.idFrom, this.idTo, MeetActivity.this);
         for (Date d : userD) {
             daysUser.put(d.getTime(), true);
             caldroidFragment.setBackgroundDrawableForDate(blueUser, new Date(d.getTime()));
         }
-        Date userO[] = searchDatabase(this.idTo, this.idFrom);
+        Date userO[] = User.dispo(this.idTo, this.idFrom, MeetActivity.this);
         for (Date d : userO) {
             daysOther.put(d.getTime(), true);
             if (daysUser.get(t) != null) {
@@ -150,6 +150,7 @@ public class MeetActivity extends AppCompatActivity {
             */
             @Override
             public void onSelectDate(Date date, View view) {
+                Log.wtf("Date: ",date.getTime()+"");
                 if (daysUser.get(date.getTime()) != null) {//the user has already click on this date
                     if (daysUser.get(date.getTime()) == true) {
                         if (daysOther.get(date.getTime()) != null && daysOther.get(date.getTime()) == true) {
@@ -220,19 +221,6 @@ public class MeetActivity extends AppCompatActivity {
             dialogCaldroidFragment.saveStatesToKey(outState,
                     "DIALOG_CALDROID_SAVED_STATE");
         }
-    }
-
-    public Date[] searchDatabase(int from, int to) {
-        DatabaseHelper dbh = new DatabaseHelper(MeetActivity.this);
-        SQLiteDatabase db = dbh.open();
-        String[] param = {""+from, "" +to};
-        Cursor cursor = db.rawQuery("SELECT strftime('%s', d.Jour) FROM dispo d WHERE d.ID_from = ? AND d.ID_to = ?\n", param);
-        Date[] donnees = new Date[cursor.getCount()];
-        for (int i = 0; i < donnees.length; i++) {
-            donnees[i] = new Date(cursor.getLong(i));
-        }
-        cursor.close();
-        return donnees;
     }
 
 }
