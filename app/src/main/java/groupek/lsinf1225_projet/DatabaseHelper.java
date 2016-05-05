@@ -3,6 +3,7 @@ package groupek.lsinf1225_projet;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -214,7 +215,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         val.put("Langue", user.getLangue());
         val.put("Cacher_nom", user.getCacherNom());
         val.put("Cacher_adresse", user.getCacherAdresse());
-        val.put("Cachet_telephone", user.getCacherTelephone());
+        val.put("Cacher_telephone", user.getCacherTelephone());
         val.put("Cacher_facebook", user.getCacherFacebook());
         db.insert("user", null, val);
         db.close();
@@ -341,6 +342,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + "'"+newValues[17]+"') WHERE user.ID ="+Integer.toString(user.getId());
         db.execSQL(query);
         db.close();
+    }
+
+    public int connect(String login, String password) {
+        SQLiteDatabase db = this.open();
+        String[] param = {login, password};
+        Cursor cursor = db.rawQuery("SELECT ID FROM user WHERE Login = ? AND Pass = ?", param);
+        try {
+            if (!cursor.moveToFirst())
+                addUser(new UserTable(login, password));
+        } catch (SQLiteConstraintException e) {
+            return -1;
+        }
+        Cursor cursor2 = db.rawQuery("SELECT ID FROM user WHERE Login = ? AND Pass = ?", param);
+        if (!cursor2.moveToFirst())
+            return -1;
+        int id = cursor2.getInt(0);
+        cursor.close();
+        cursor2.close();
+        db.close();
+        return id;
     }
 
     /*    Rencontre    */
