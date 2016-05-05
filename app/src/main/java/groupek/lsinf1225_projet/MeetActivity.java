@@ -113,20 +113,25 @@ public class MeetActivity extends AppCompatActivity {
         t.replace(R.id.calendar1, caldroidFragment);
         t.commit();
 
-
-        this.idFrom = (int) savedInstanceState.get("myID");
-        this.idTo = (int) savedInstanceState.get("thisID");
+        if(savedInstanceState!=null) {
+            this.idFrom = (int) savedInstanceState.get("myID");
+            this.idTo = (int) savedInstanceState.get("thisID");
+        }
+        else{
+            this.idFrom = -1;
+            this.idTo = -1;
+        }
 
 
         //initialising the hashtable and the colors of the calendar
         daysUser = new Hashtable<>();
         daysOther = new Hashtable<>();
-        Date userD[] = searchDatabase(this.context);
+        Date userD[] = searchDatabase(this.idFrom, this.idTo);
         for (Date d : userD) {
             daysUser.put(d.getTime(), true);
             caldroidFragment.setBackgroundDrawableForDate(blueUser, new Date(d.getTime()));
         }
-        Date userO[] = searchDatabase(this.context);
+        Date userO[] = searchDatabase(this.idTo, this.idFrom);
         for (Date d : userO) {
             daysOther.put(d.getTime(), true);
             if (daysUser.get(t) != null) {
@@ -209,6 +214,19 @@ public class MeetActivity extends AppCompatActivity {
             dialogCaldroidFragment.saveStatesToKey(outState,
                     "DIALOG_CALDROID_SAVED_STATE");
         }
+    }
+
+    public Date[] searchDatabase(int from, int to) {
+        DatabaseHelper dbh = new DatabaseHelper(MeetActivity.this);
+        SQLiteDatabase db = dbh.open();
+        String[] param = {""+from, "" +to};
+        Cursor cursor = db.rawQuery("SELECT strftime('%s', d.Jour) FROM dispo d WHERE d.ID_from = ? AND d.ID_to = ?\n", param);
+        Date[] donnees = new Date[cursor.getCount()];
+        for (int i = 0; i < donnees.length; i++) {
+            donnees[i] = new Date(cursor.getLong(i));
+        }
+        cursor.close();
+        return donnees;
     }
 
 }
