@@ -7,13 +7,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 /**
  * Created by alexandre on 5/2/16.
- * Cette classe a pour but de gerer la communication entre
- * l'application et la BDD.
+ * Cette classe est une implémentation minimale de l'articulation entre
+ * la base de données et notre application
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "GroupeK_BDD.sqlite";
     private static final int DB_VERSION = 1;
+
 
     public DatabaseHelper(Context context){
         super(context,DB_NAME,null,DB_VERSION);
