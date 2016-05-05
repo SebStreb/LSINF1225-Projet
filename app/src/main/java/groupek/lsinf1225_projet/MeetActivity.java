@@ -122,58 +122,55 @@ public class MeetActivity extends AppCompatActivity {
         //initialising the hashtable and the colors of the calendar
         daysUser = new Hashtable<>();
         daysOther = new Hashtable<>();
-        //Date userD[] = User.dispo(this.idFrom, this.idTo, MeetActivity.this);
+
+        //Date userD[] = User.dispo(this.idFrom, this.idTo, MeetActivity.this);//TODO set the db
         Date userD [] = {new Date(1464213540000l)};
         for (Date d : userD) {
-            d = new Date(d.getTime() - (d.getTime() % (1000*60*60*24)));
             daysUser.put(d.getTime(), true);
             caldroidFragment.setBackgroundDrawableForDate(blueUser, new Date(d.getTime()));
         }
-        //Date userO[] = User.dispo(this.idTo, this.idFrom, MeetActivity.this);
+
+        //Date userO[] = User.dispo(this.idTo, this.idFrom, MeetActivity.this);//TODO set the db
         Date userO [] = {new Date(1464213540000l)};
         for (Date d : userO) {
-            d = new Date(d.getTime() - (d.getTime() % (1000*60*60*24)));
             daysOther.put(d.getTime(), true);
-            if (daysUser.get(d) != null) {
+            if (into(d,userD)) {
                 caldroidFragment.setBackgroundDrawableForDate(red, new Date(d.getTime()));
             } else {
-
                 caldroidFragment.setBackgroundDrawableForDate(blueOther, new Date(d.getTime()));
             }
+
         }
+
         caldroidFragment.refreshView();
 
         // Setup listener
         final CaldroidListener listener = new CaldroidListener() {
-
             /*
             * On actualise la vue and fonction des dates que l'utilisateur sélectionne
             */
             @Override
             public void onSelectDate(Date date, View view) {
-                if (daysUser.get(date.getTime()) != null) {//the user has already click on this date
-                    if (daysUser.get(date.getTime()) == true) {
-                        if (daysOther.get(date.getTime()) != null && daysOther.get(date.getTime()) == true) {
-                            caldroidFragment.setBackgroundDrawableForDate(blueOther, date);
-                        } else {
-                            caldroidFragment.clearBackgroundDrawableForDate(date);
-                        }
-                        daysUser.put(date.getTime(), false);
-                    } else {
-                        if (daysOther.get(date.getTime()) != null && daysOther.get(date.getTime()) == true) {
-                            caldroidFragment.setBackgroundDrawableForDate(red, date);
-                        } else {
-                            caldroidFragment.setBackgroundDrawableForDate(blueUser, date);
-                        }
-                        daysUser.put(date.getTime(), true);
-                    }
-                } else {//the user has never click on this date
+                ColorDrawable col = null;
+                try {
+                     col = (ColorDrawable)view.getBackground();
+                }
+                catch(ClassCastException e){
                     daysUser.put(date.getTime(), true);
-                    if (daysOther.get(date.getTime()) != null && daysOther.get(date.getTime()) == true) {
-                        caldroidFragment.setBackgroundDrawableForDate(red, date);
-                    } else {
-                        caldroidFragment.setBackgroundDrawableForDate(blueUser, date);
-                    }
+                    caldroidFragment.setBackgroundDrawableForDate(blueUser, date);
+                }
+
+                if(blueUser.equals(col)){
+                    daysUser.put(date.getTime(), false);
+                    caldroidFragment.clearBackgroundDrawableForDate(date);
+                }
+                else if (blueOther.equals(col)){
+                    daysUser.put(date.getTime(), true);
+                    caldroidFragment.setBackgroundDrawableForDate(red, date);
+                }
+                else if(red.equals(col)){
+                    daysUser.put(date.getTime(), false);
+                    caldroidFragment.setBackgroundDrawableForDate(blueOther, date);
                 }
                 caldroidFragment.refreshView();
             }
@@ -223,4 +220,10 @@ public class MeetActivity extends AppCompatActivity {
         //TODO, remove the database of day for thoses two users and resave the days here
     }
 
+    private boolean into(Date d, Date[] l){
+        for(Date t : l)
+            if(t.equals(d))
+                return true;
+        return false;
+    }
 }
