@@ -2,8 +2,6 @@ package groupek.lsinf1225_projet;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -40,6 +38,7 @@ public class MeetActivity extends AppCompatActivity {
     private boolean undo = false;
     private CaldroidFragment caldroidFragment;
     private CaldroidFragment dialogCaldroidFragment;
+
     //the hashtables used to know who chose what when
     private Hashtable<Long, Boolean> daysUser;
     private Hashtable<Long, Boolean> daysOther;
@@ -56,6 +55,8 @@ public class MeetActivity extends AppCompatActivity {
     }
 
     public MeetActivity(int idFrom, int idTo, Context context) {
+        this.idFrom = idFrom;
+        this.idTo = idTo;
         this.context = context;
     }
 
@@ -121,17 +122,22 @@ public class MeetActivity extends AppCompatActivity {
         //initialising the hashtable and the colors of the calendar
         daysUser = new Hashtable<>();
         daysOther = new Hashtable<>();
-        Date userD[] = User.dispo(this.idFrom, this.idTo, MeetActivity.this);
+        //Date userD[] = User.dispo(this.idFrom, this.idTo, MeetActivity.this);
+        Date userD [] = {new Date(1464213540000l)};
         for (Date d : userD) {
+            d = new Date(d.getTime() - (d.getTime() % (1000*60*60*24)));
             daysUser.put(d.getTime(), true);
             caldroidFragment.setBackgroundDrawableForDate(blueUser, new Date(d.getTime()));
         }
-        Date userO[] = User.dispo(this.idTo, this.idFrom, MeetActivity.this);
+        //Date userO[] = User.dispo(this.idTo, this.idFrom, MeetActivity.this);
+        Date userO [] = {new Date(1464213540000l)};
         for (Date d : userO) {
+            d = new Date(d.getTime() - (d.getTime() % (1000*60*60*24)));
             daysOther.put(d.getTime(), true);
-            if (daysUser.get(t) != null) {
+            if (daysUser.get(d) != null) {
                 caldroidFragment.setBackgroundDrawableForDate(red, new Date(d.getTime()));
             } else {
+
                 caldroidFragment.setBackgroundDrawableForDate(blueOther, new Date(d.getTime()));
             }
         }
@@ -145,7 +151,6 @@ public class MeetActivity extends AppCompatActivity {
             */
             @Override
             public void onSelectDate(Date date, View view) {
-                Log.wtf("Date: ",date.getTime()+"");
                 if (daysUser.get(date.getTime()) != null) {//the user has already click on this date
                     if (daysUser.get(date.getTime()) == true) {
                         if (daysOther.get(date.getTime()) != null && daysOther.get(date.getTime()) == true) {
@@ -156,7 +161,7 @@ public class MeetActivity extends AppCompatActivity {
                         daysUser.put(date.getTime(), false);
                     } else {
                         if (daysOther.get(date.getTime()) != null && daysOther.get(date.getTime()) == true) {
-                            caldroidFragment.setBackgroundDrawableForDate(blueOther, date);
+                            caldroidFragment.setBackgroundDrawableForDate(red, date);
                         } else {
                             caldroidFragment.setBackgroundDrawableForDate(blueUser, date);
                         }
@@ -165,7 +170,7 @@ public class MeetActivity extends AppCompatActivity {
                 } else {//the user has never click on this date
                     daysUser.put(date.getTime(), true);
                     if (daysOther.get(date.getTime()) != null && daysOther.get(date.getTime()) == true) {
-                        caldroidFragment.setBackgroundDrawableForDate(blueOther, date);
+                        caldroidFragment.setBackgroundDrawableForDate(red, date);
                     } else {
                         caldroidFragment.setBackgroundDrawableForDate(blueUser, date);
                     }
@@ -186,7 +191,7 @@ public class MeetActivity extends AppCompatActivity {
             @Override
             public void onCaldroidViewCreated() {
                 if (caldroidFragment.getLeftArrowButton() != null) {
-                    //on sait que la view est crée et on en  a la confiormation
+                    //on sait que la view est crée et on en  a la confirmation
                 }
             }
 
@@ -210,6 +215,12 @@ public class MeetActivity extends AppCompatActivity {
             dialogCaldroidFragment.saveStatesToKey(outState,
                     "DIALOG_CALDROID_SAVED_STATE");
         }
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        //TODO, remove the database of day for thoses two users and resave the days here
     }
 
 }

@@ -122,9 +122,7 @@ public class User {
     public static Date[] dispo(int ID1, int ID2, Context con) {
         DatabaseHelper myHelper = new DatabaseHelper(con);
         SQLiteDatabase database =  myHelper.open();
-        String[] param = {Integer.toString(ID1), Integer.toString(ID2)};
-        String query = "SELECT strftime('%s', d.Jour) AS \"timestamps\" FROM dispo d WHERE d.ID_from = ? AND d.ID_to = ?";
-        Cursor cursor = database.rawQuery(query, param);
+        Cursor cursor = database.rawQuery("SELECT strftime('%s', d.Jour) AS \"timestamps\" FROM dispo d WHERE d.ID_from = ? AND d.ID_to = ?", new String[] {""+ID1, ""+ID2});
         cursor.moveToFirst();
         Date[] donnees = new Date[cursor.getCount()];
         for (int i = 0; i < donnees.length; i++) {
