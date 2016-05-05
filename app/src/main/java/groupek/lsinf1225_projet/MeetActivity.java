@@ -123,15 +123,17 @@ public class MeetActivity extends AppCompatActivity {
         daysUser = new Hashtable<>();
         daysOther = new Hashtable<>();
 
-        //Date userD[] = User.dispo(this.idFrom, this.idTo, MeetActivity.this);//TODO set the db
-        Date userD [] = {new Date(1464213540000l)};
+        DatabaseHelper db = new DatabaseHelper(MeetActivity.this);
+        Date userD[] = db.getDispo(this.idFrom, this.idTo);//TODO set the db
+        Log.wtf("Powa !!",""+userD.length);
+        //Date userD [] = {new Date(1464213540000l)};//for the debug
         for (Date d : userD) {
             daysUser.put(d.getTime(), true);
             caldroidFragment.setBackgroundDrawableForDate(blueUser, new Date(d.getTime()));
         }
 
-        //Date userO[] = User.dispo(this.idTo, this.idFrom, MeetActivity.this);//TODO set the db
-        Date userO [] = {new Date(1464213540000l)};
+        Date userO[] = db.getDispo(this.idTo, this.idFrom);//TODO set the db
+        //Date userO [] = {new Date(1464213540000l)};//for the debug
         for (Date d : userO) {
             daysOther.put(d.getTime(), true);
             if (into(d,userD)) {

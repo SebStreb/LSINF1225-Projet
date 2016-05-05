@@ -19,7 +19,6 @@ public class MenuActivity extends AppCompatActivity {
         ID = b.getInt("id");
         DatabaseHelper db = new DatabaseHelper(this);
         UserTable user = db.getUser(ID);
-        Log.wtf("User", user.getLogin());
 
         Resources res = getResources();
         String[] menu = {

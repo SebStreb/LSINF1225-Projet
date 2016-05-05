@@ -6,8 +6,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -363,5 +365,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    //Querry: SELECT strftime('%s', d.Jour) AS "timestamps" FROM dispo d WHERE d.ID_from = ? AND d.ID_to = ?
+    public Date[] getDispo(int from, int to){
+        SQLiteDatabase db = this.open();
+        String args [] = new String[2];
+        args[0] = Integer.toString(from);
+        args[1] = Integer.toString(to);
+        Cursor cursor = db.rawQuery("SELECT strftime('%s', d.Jour) FROM dispo d WHERE d.ID_from = ? AND d.ID_to = ?", args);
+        Date [] res = new Date[cursor.getCount()];
+        for(int i = 0; i < cursor.getCount(); i++){
+            res[i] = new Date(cursor.getLong(0));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        db.close();
+        return res;
+    }
 
 }
