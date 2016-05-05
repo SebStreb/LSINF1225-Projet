@@ -95,19 +95,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "\tforeign key (ID_user2) references user\n" +
                 ");");
 
-        db.execSQL("INSERT OR REPLACE INTO user(Login, Pass, Nom, Prenom) VALUES " +
+        db.execSQL("INSERT OR IGNORE INTO user(Login, Pass, Nom, Prenom) VALUES " +
                 "('sebstreb@yolo.be', 'Yolo1234', 'Strebelle', 'Sebastien')");
-        db.execSQL("INSERT OR REPLACE INTO user(Login, Pass, Nom, Prenom) VALUES " +
+        db.execSQL("INSERT OR IGNORE INTO user(Login, Pass, Nom, Prenom) VALUES " +
                 "('pierreort@yolo.be', 'Yolo1234', 'Ortegat', 'Pierre')");
-        db.execSQL("INSERT OR REPLACE INTO user(Login, Pass, Nom, Prenom) VALUES " +
+        db.execSQL("INSERT OR IGNORE INTO user(Login, Pass, Nom, Prenom) VALUES " +
                 "('alexrucq@yolo.be', 'Yolo1234', 'Rucquoy', 'Alexandre')");
-        db.execSQL("INSERT OR REPLACE INTO user(Login, Pass, Nom, Prenom) VALUES " +
+        db.execSQL("INSERT OR IGNORE INTO user(Login, Pass, Nom, Prenom) VALUES " +
                 "('antoinepop@yolo.be', 'Yolo1234', 'Popeler', 'Antoine')");
-        db.execSQL("INSERT OR REPLACE INTO user(Login, Pass, Nom, Prenom) VALUES " +
+        db.execSQL("INSERT OR IGNORE INTO user(Login, Pass, Nom, Prenom) VALUES " +
                 "('damienvan@yolo.be', 'Yolo1234', 'Vaneberk', 'Damien')");
-        db.execSQL("INSERT OR REPLACE INTO user(Login, Pass, Nom, Prenom) VALUES " +
+        db.execSQL("INSERT OR IGNORE INTO user(Login, Pass, Nom, Prenom) VALUES " +
                 "('angmerk@yolo.be', 'Yolo1234', 'Merkel', 'Angela')");
-        db.execSQL("INSERT OR REPLACE INTO user(Login, Pass, Nom, Prenom) VALUES " +
+        db.execSQL("INSERT OR IGNORE INTO user(Login, Pass, Nom, Prenom) VALUES " +
                 "('scarjo@yolo.be', 'Yolo1234', 'Johanson', 'Scarlet')");
     }
 
