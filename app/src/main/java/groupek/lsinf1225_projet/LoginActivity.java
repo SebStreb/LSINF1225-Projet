@@ -343,6 +343,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
             cursor.close();
             cursor2.close();
+            db.close();
             return true;
         }
 
