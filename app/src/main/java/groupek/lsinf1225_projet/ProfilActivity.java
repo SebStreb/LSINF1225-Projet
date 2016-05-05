@@ -55,6 +55,7 @@ public class ProfilActivity extends AppCompatActivity {
                                 listDataHeader.get(groupPosition)).get(
                                 childPosition), Toast.LENGTH_SHORT)
                         .show();
+
                 return false;
             }
         });
