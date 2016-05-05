@@ -54,7 +54,7 @@ public class MenuActivity extends AppCompatActivity {
                         newActivity.putExtras(b);
                         startActivity(newActivity);
                         break;
-                    case 2:  newActivity = new Intent(MenuActivity.this, Browser.class);
+                    case 2:  newActivity = new Intent(MenuActivity.this, BrowserActivity.class);
                         b.putInt("id", ID);
                         newActivity.putExtras(b);
                         startActivity(newActivity);
