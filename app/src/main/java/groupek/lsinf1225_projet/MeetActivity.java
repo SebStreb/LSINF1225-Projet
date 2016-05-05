@@ -117,22 +117,23 @@ public class MeetActivity extends AppCompatActivity {
         Bundle b = getIntent().getExtras();
 
         this.idFrom = b.getInt("myID");
-        this.idTo = b.getInt("thisID");
+        this.idTo = b.getInt("hisID");
 
         //initialising the hashtable and the colors of the calendar
         daysUser = new Hashtable<>();
-        daysOther = new Hashtable<>();
+        daysOther = new Hashtable<>();//TODO put this one back to work
 
         DatabaseHelper db = new DatabaseHelper(MeetActivity.this);
-        Date userD[] = db.getDispo(this.idFrom, this.idTo);//TODO set the db
-        Log.wtf("Powa !!",""+userD.length);
+        Date userD[] = db.getDispo(this.idFrom, this.idTo);
         //Date userD [] = {new Date(1464213540000l)};//for the debug
+        Log.wtf("Nb: ",""+userD.length);
+        Log.wtf("Exemple:",""+userD[0].toString());
         for (Date d : userD) {
             daysUser.put(d.getTime(), true);
             caldroidFragment.setBackgroundDrawableForDate(blueUser, new Date(d.getTime()));
         }
 
-        Date userO[] = db.getDispo(this.idTo, this.idFrom);//TODO set the db
+        Date userO[] = db.getDispo(this.idTo, this.idFrom);
         //Date userO [] = {new Date(1464213540000l)};//for the debug
         for (Date d : userO) {
             daysOther.put(d.getTime(), true);

@@ -389,13 +389,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //Querry: SELECT strftime('%s', d.Jour) AS "timestamps" FROM dispo d WHERE d.ID_from = ? AND d.ID_to = ?
     public Date[] getDispo(int from, int to){
         SQLiteDatabase db = this.open();
-        String args [] = new String[2];
+
+        String args [] = new String[2], col [] = new String[1];
         args[0] = Integer.toString(from);
         args[1] = Integer.toString(to);
-        Cursor cursor = db.rawQuery("SELECT strftime('%s', d.Jour) FROM dispo d WHERE d.ID_from = ? AND d.ID_to = ?", args);
+        col[0] = "Jour";
+        //Cursor cursor = db.query("dispo", col, "ID_from = ? AND ID_to = ?", args, null, null, null, null );
+        Cursor cursor = db.rawQuery("SELECT d.Jour FROM dispo d WHERE d.ID_from = ? AND d.ID_to = ?", args);
         Date [] res = new Date[cursor.getCount()];
+        cursor.moveToFirst();
         for(int i = 0; i < cursor.getCount(); i++){
-            res[i] = new Date(cursor.getLong(0));
+            String temp = cursor.getString(0);
+            String sp[] = temp.split("-");
+            res[i] = new Date(Integer.parseInt(sp[0])-1900,Integer.parseInt(sp[1])-1,Integer.parseInt((sp[2].split(" "))[0]));//TODO change this deprecated method
             cursor.moveToNext();
         }
         cursor.close();
