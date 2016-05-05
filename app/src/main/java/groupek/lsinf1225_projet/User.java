@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.text.DateFormat;
 import java.util.*;
 
 public class User {
@@ -16,6 +17,23 @@ public class User {
 
 
     public User(Context con, int id){
+        this.id = id;
+        this.context = con;
+        caracteristiques = new Hashtable<String,Object>();
+        String[] data = searchDatabase();
+        for (int i = 0; i < carac.length; i++)
+            setOpt(carac[i], data[i]);
+    }
+
+    public User(Context con, String prenom, String nom) {
+        DatabaseHelper myHelper = new DatabaseHelper(con);
+        SQLiteDatabase database =  myHelper.open();
+        String[] param = {prenom, nom};
+        String query = "SELECT ID FROM user WHERE Prenom = ? AND Nom = ?";
+        Cursor cursor = database.rawQuery(query, param);
+        cursor.moveToFirst();
+        int id = cursor.getInt(0);
+        cursor.close();
         this.id = id;
         this.context = con;
         caracteristiques = new Hashtable<String,Object>();
@@ -101,18 +119,6 @@ public class User {
         return list.toArray(new String[list.size()]);
     }
 
-    public static int find(String prenom, String nom, Context con) {
-        DatabaseHelper myHelper = new DatabaseHelper(con);
-        SQLiteDatabase database =  myHelper.open();
-        String[] param = {prenom, nom};
-        String query = "SELECT ID FROM user WHERE Prenom = ? AND Nom = ?";
-        Cursor cursor = database.rawQuery(query, param);
-        cursor.moveToFirst();
-        int ID = cursor.getInt(0);
-        cursor.close();
-        return ID;
-    }
-
     public static Date[] dispo(int ID1, int ID2, Context con) {
         DatabaseHelper myHelper = new DatabaseHelper(con);
         SQLiteDatabase database =  myHelper.open();
@@ -126,6 +132,22 @@ public class User {
         }
         cursor.close();
         return donnees;
+    }
+
+    public void newMessage(int idTo, String message) {
+        DatabaseHelper myHelper = new DatabaseHelper(context);
+        SQLiteDatabase database =  myHelper.open();
+        String query = "INSERT INTO messages(ID_from, ID_to, Content, Time) VALUES(" + getId() + ", " + idTo
+                + ", " + message + ", " + DateFormat.getDateTimeInstance().format(new Date()) + ")";
+        database.execSQL(query);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public Context getContext() {
+        return context;
     }
 
 }

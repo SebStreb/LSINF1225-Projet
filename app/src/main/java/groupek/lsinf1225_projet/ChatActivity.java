@@ -24,14 +24,12 @@ public class ChatActivity extends AppCompatActivity {
     private Button sendBtn;
     private ChatAdapter adapter;
     private ArrayList<ChatMessage> chatHistory;
-    private int myID;
-    private int hisID;
-    private Context con;
+    private User me;
+    private User other;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        con = this;
         setContentView(R.layout.activity_chat);
         initControls();
     }
@@ -46,30 +44,23 @@ public class ChatActivity extends AppCompatActivity {
 
         Bundle b = getIntent().getExtras();
         String value = b.getString("nom");
-        myID = b.getInt("myID");
-        hisID = b.getInt("hisID");
+        me = new User(this, b.getInt("myID"));
+        other = new User(this, b.getInt("hisID"));
 
         companionLabel.setText(value);
-
         loadDummyHistory();
 
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String messageText = messageET.getText().toString();
-                String date = DateFormat.getDateTimeInstance().format(new Date());
                 if (TextUtils.isEmpty(messageText))
                     return;
 
-                DatabaseHelper myHelper = new DatabaseHelper(con);
-                SQLiteDatabase database =  myHelper.open();
-                String query = "INSERT INTO messages(ID_from, ID_to, Content, Time) VALUES(" + myID + ", " + hisID
-                        + ", " + messageText + ", " + date + ")";
-                database.execSQL(query);
-
+                me.newMessage(other.getId(), messageText);
                 ChatMessage chatMessage = new ChatMessage();
                 chatMessage.setMessage(messageText);
-                chatMessage.setDate(date);
+                chatMessage.setDate(DateFormat.getDateTimeInstance().format(new Date()));
                 chatMessage.setMe(true);
 
                 messageET.setText("");
@@ -90,14 +81,14 @@ public class ChatActivity extends AppCompatActivity {
 
     private void loadDummyHistory() {
         chatHistory = new ArrayList<ChatMessage>();
-        String[] param = {Integer.toString(myID), Integer.toString(hisID), Integer.toString(hisID), Integer.toString(myID)};
+        String[] param = {Integer.toString(me.getId()), Integer.toString(other.getId()), Integer.toString(other.getId()), Integer.toString(me.getId())};
         DatabaseHelper myHelper = new DatabaseHelper(this);
         SQLiteDatabase database =  myHelper.open();
         String query = "SELECT ID_from, Content, Time FROM messages WHERE ID_from = ? AND ID_to = ? OR ID_from = ? AND ID_to = ?";
         Cursor cursor = database.rawQuery(query, param);
         while (!cursor.isAfterLast()) {
             ChatMessage m = new ChatMessage();
-            m.setMe(cursor.getInt(0) == myID);
+            m.setMe(cursor.getInt(0) == other.getId());
             m.setMessage(cursor.getString(1));
             m.setDate(cursor.getString(2));
             chatHistory.add(m);
