@@ -336,6 +336,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             Cursor cursor2 = db.rawQuery("SELECT ID FROM user WHERE user.Login = ? AND user.Pass = ?",param);
             cursor2.moveToFirst();
             this.id = cursor2.getInt(0);
+            if (cursor2.getCount() > 0)
+            {
+                cursor2.moveToFirst();
+                this.id = cursor2.getInt(cursor2.getColumnIndex("ID"));
+            }
             cursor.close();
             cursor2.close();
             return true;
@@ -349,7 +354,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             if (success) {
                 Intent newActivity = new Intent(LoginActivity.this, MenuActivity.class);
                 Bundle b = new Bundle();
-                b.putInt("id", id);
+                b.putInt("id", this.id);
                 newActivity.putExtras(b);
                 startActivity(newActivity);
             } else {
