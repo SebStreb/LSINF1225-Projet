@@ -24,10 +24,10 @@ public class UserTable {
     private String langue;
     private boolean cacherNom;
     private boolean cacherAdresse;
-    private boolean cacherPhoto;
+    private boolean cacherTelephone;
     private boolean cacherFacebook;
 
-    public UserTable(int id, String login, String pass, String prenom, String nom, String genre, String age, String cheveux, String yeux, String rue, int codePost, String localite, String pays, String telephone, String inclinaison, String facebook, String langue, boolean cacherNom, boolean cacherAdresse, boolean cacherPhoto, boolean cacherFacebook) {
+    public UserTable(int id, String login, String pass, String nom, String prenom, String genre, String age, String cheveux, String yeux, String rue, int codePost, String localite, String pays, String telephone, String inclinaison, String facebook, String langue, boolean cacherNom, boolean cacherAdresse, boolean cacherTelephone, boolean cacherFacebook) {
         this.id = id;
         this.login = login;
         this.pass = pass;
@@ -47,7 +47,7 @@ public class UserTable {
         this.langue = langue;
         this.cacherNom = cacherNom;
         this.cacherAdresse = cacherAdresse;
-        this.cacherPhoto = cacherPhoto;
+        this.cacherTelephone = cacherTelephone;
         this.cacherFacebook = cacherFacebook;
     }
 
@@ -70,7 +70,7 @@ public class UserTable {
         this.langue = "vide";
         this.cacherNom = false;
         this.cacherAdresse = false;
-        this.cacherPhoto = false;
+        this.cacherTelephone = false;
         this.cacherFacebook = false;
     }
 
@@ -218,12 +218,12 @@ public class UserTable {
         this.cacherAdresse = cacherAdresse;
     }
 
-    public boolean getCacherPhoto() {
-        return cacherPhoto;
+    public boolean getCacherTelephone() {
+        return cacherTelephone;
     }
 
-    public void setCacherPhoto(boolean cacherPhoto) {
-        this.cacherPhoto = cacherPhoto;
+    public void setCacherTelephone(boolean cacherTelephone) {
+        this.cacherTelephone = cacherTelephone;
     }
 
     public boolean getCacherFacebook() {

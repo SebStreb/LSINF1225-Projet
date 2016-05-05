@@ -293,6 +293,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         private final String mEmail;
         private final String mPassword;
         private int id;
+        private String login;
         private String[] userCarac;
 
         UserLoginTask(String email, String password) {
@@ -331,17 +332,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }catch(SQLiteConstraintException e){ //si l'user tappe un mauvais mot de passe
                 return false;
             }
+            cursor.close();
 
             this.userCarac = result;//on assigne ledit tableau a userCarac, qui representera les caracteristiques d'un utilisateur
             Cursor cursor2 = db.rawQuery("SELECT ID FROM user WHERE user.Login = ? AND user.Pass = ?",param);
             cursor2.moveToFirst();
+            this.login = mEmail;
             this.id = cursor2.getInt(0);
             if (cursor2.getCount() > 0)
             {
                 cursor2.moveToFirst();
                 this.id = cursor2.getInt(cursor2.getColumnIndex("ID"));
             }
-            cursor.close();
             cursor2.close();
             db.close();
             return true;
@@ -356,6 +358,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 Intent newActivity = new Intent(LoginActivity.this, MenuActivity.class);
                 Bundle b = new Bundle();
                 b.putInt("id", this.id);
+                b.putString("login", this.login);
                 newActivity.putExtras(b);
                 startActivity(newActivity);
             } else {
