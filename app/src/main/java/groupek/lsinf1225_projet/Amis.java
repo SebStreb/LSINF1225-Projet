@@ -76,7 +76,7 @@ public class Amis extends AppCompatActivity {
         SQLiteDatabase database =  myHelper.open();
         String [] param = new String [1];
         param[0] = String.valueOf(IdUtilisateur);
-        String requete = "SELECT DISTINCT U.ID FROM user U, relations R WHERE (U.ID = ID_to and R.ID_from = ? and R.EtatReq = ?) or ( U.ID = R.ID_from and R.ID_to = ? and R.EtatReq = ?);";
+        String requete = "SELECT DISTINCT U.ID FROM user U, relations R WHERE (U.ID = ID_to and R.ID_from = ? and R.EtatReq = 1) or ( U.ID = R.ID_from and R.ID_to = ? and R.EtatReq = 1);";
         Cursor cursor = database.rawQuery(requete, param);
         int IdAmi;
         Amis ami;
