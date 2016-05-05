@@ -13,15 +13,16 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "GroupeK_BDD.sqlite";
-    private static final int DB_VERSION = 2;
+    private static final int DB_VERSION = 1;
 
     public DatabaseHelper(Context context){
         super(context,DB_NAME,null,DB_VERSION);
+        onCreate(getWritableDatabase());
     }
 
 
     public void onCreate(SQLiteDatabase db){
-        db.execSQL("create table user (\n" +
+        db.execSQL("create table if not exists user (\n" +
                 "\tID integer auto_increment primary key unique,\n" +
                 "\tLogin char not null unique,\n" +
                 "\tPass char not null,\n" +
@@ -32,7 +33,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "\tCheveux char not null default 'vide',\n" +
                 "\tYeux char not null default 'vide',\n" +
                 "\tRue char not null default 'vide',\n" +
-                "\tCodePost integer not null defalut 0,\n" +
+                "\tCodePost integer not null default 0,\n" +
                 "\tLocalite char not null default 'vide',\n" +
                 "\tPays char not null default 'vide',\n" +
                 "\tTelephone char not null default 'vide',\n" +
@@ -45,9 +46,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "\tCacher_facebook bool not null default true\n" +
                 ");\n");
 
-        db.execSQL("create unique index INDEX_ID on user(ID);");
+        db.execSQL("create unique index if not exists INDEX_ID on user(ID);");
 
-        db.execSQL("create table messages (\n" +
+        db.execSQL("create table if not exists messages (\n" +
                 "\tID_from  integer not null,\n" +
                 "\tID_to  integer not null,\n" +
                 "\tTime datetime not null,\n" +
@@ -56,7 +57,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "\tforeign key (ID_to) references user\n" +
                 ");");
 
-        db.execSQL("create table photos (\n" +
+        db.execSQL("create table if not exists photos (\n" +
                 "\tID_user  integer not null,\n" +
                 "\tNom char not null,\n" +
                 "\tPhoto blob not null,\n" +
@@ -65,9 +66,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "\tforeign key (ID_user) references user\n" +
                 ");");
 
-        db.execSQL("create index INDEX_PHOTO on photos(ID_user);");
+        db.execSQL("create index if not exists INDEX_PHOTO on photos(ID_user);");
 
-        db.execSQL("create table relations (\n" +
+        db.execSQL("create table if not exists relations (\n" +
                 "\tID_from  integer not null,\n" +
                 "\tID_to  integer not null,\n" +
                 "\tEtatReq integer default 0 not null,\n" +
@@ -77,7 +78,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "\tforeign key (ID_to) references user\n" +
                 ");");
 
-        db.execSQL("create table dispo (\n" +
+        db.execSQL("create table if not exists dispo (\n" +
                 "\tID_from  integer not null,\n" +
                 "\tID_to  integer not null,\n" +
                 "\tJour datetime not null,\n" +
@@ -85,7 +86,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "\tforeign key (ID_to) references user\n" +
                 ");");
 
-        db.execSQL("create table rencontre (\n" +
+        db.execSQL("create table if not exists rencontre (\n" +
                 "\tID_user1  integer not null,\n" +
                 "\tID_user2  integer not null,\n" +
                 "\tJour datetime not null,\n" +
@@ -95,19 +96,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 ");");
 
         db.execSQL("INSERT OR REPLACE INTO user(Login, Pass, Nom, Prenom) VALUES " +
-                "('sebstreb@yolo.be', 'Yolo1234', 'Strebelle', 'Sebastien)");
+                "('sebstreb@yolo.be', 'Yolo1234', 'Strebelle', 'Sebastien')");
         db.execSQL("INSERT OR REPLACE INTO user(Login, Pass, Nom, Prenom) VALUES " +
-                "('pierreort@yolo.be', 'Yolo1234', 'Ortegat', 'Pierre)");
+                "('pierreort@yolo.be', 'Yolo1234', 'Ortegat', 'Pierre')");
         db.execSQL("INSERT OR REPLACE INTO user(Login, Pass, Nom, Prenom) VALUES " +
-                "('alexrucq@yolo.be', 'Yolo1234', 'Rucquoy', 'Alexandre)");
+                "('alexrucq@yolo.be', 'Yolo1234', 'Rucquoy', 'Alexandre')");
         db.execSQL("INSERT OR REPLACE INTO user(Login, Pass, Nom, Prenom) VALUES " +
-                "('antoinepop@yolo.be', 'Yolo1234', 'Popeler', 'Antoine)");
+                "('antoinepop@yolo.be', 'Yolo1234', 'Popeler', 'Antoine')");
         db.execSQL("INSERT OR REPLACE INTO user(Login, Pass, Nom, Prenom) VALUES " +
-                "('damienvan@yolo.be', 'Yolo1234', 'Vaneberk', 'Damien)");
+                "('damienvan@yolo.be', 'Yolo1234', 'Vaneberk', 'Damien')");
         db.execSQL("INSERT OR REPLACE INTO user(Login, Pass, Nom, Prenom) VALUES " +
-                "('angmerk@yolo.be', 'Yolo1234', 'Merkel', 'Angela)");
+                "('angmerk@yolo.be', 'Yolo1234', 'Merkel', 'Angela')");
         db.execSQL("INSERT OR REPLACE INTO user(Login, Pass, Nom, Prenom) VALUES " +
-                "('scarjo@yolo.be', 'Yolo1234', 'Johanson', 'Scarlet)");
+                "('scarjo@yolo.be', 'Yolo1234', 'Johanson', 'Scarlet')");
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion ){ //en cas de modification majeure dans la bdd, supprime tout et reconstruit tout en incrementant DB_VERSION (SQLite oblige -_-)
@@ -122,7 +123,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE relations");
         db.execSQL("DROP TABLE dispo");
         db.execSQL("DROP TABLE rencontre");
-        db.execSQL("DROP TABLE user");
         db.execSQL("DROP INDEX INDEX_ID");
         db.execSQL("DROP INDEX INDEX_PHOTO");
     }

@@ -117,7 +117,7 @@ public class MeetActivity extends AppCompatActivity {
         this.idFrom = (int) savedInstanceState.get("myID");
         this.idTo = (int) savedInstanceState.get("thisID");
 
-
+/*
         //initialising the hashtable and the colors of the calendar
         daysUser = new Hashtable<>();
         daysOther = new Hashtable<>();
@@ -135,6 +135,7 @@ public class MeetActivity extends AppCompatActivity {
                 caldroidFragment.setBackgroundDrawableForDate(blueOther, new Date(d.getTime()));
             }
         }
+*/
         caldroidFragment.refreshView();
 
         // Setup listener
