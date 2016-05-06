@@ -37,7 +37,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void onCreate(SQLiteDatabase db){
         db.execSQL("create table if not exists user (\n" +
-                "\tID integer auto_increment primary key unique,\n" +
+                "\t_id integer primary key autoincrement,\n" +
                 "\tLogin char not null unique,\n" +
                 "\tPass char not null,\n" +
                 "\tNom char not null default 'vide',\n" +
@@ -60,7 +60,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "\tCacher_facebook bool not null default true\n" +
                 ");\n");
 
-        db.execSQL("create unique index if not exists INDEX_ID on user(ID);");
+        db.execSQL("create unique index if not exists INDEX_ID on user(_id);");
 
         db.execSQL("create table if not exists messages (\n" +
                 "\tID_from  integer not null,\n" +
@@ -109,7 +109,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "\tforeign key (ID_user2) references user\n" +
                 ");");
 
-        db.execSQL("INSERT OR IGNORE INTO user(ID, Login, Pass, Nom, Prenom) VALUES " +
+        /*db.execSQL("INSERT OR IGNORE INTO user(ID, Login, Pass, Nom, Prenom) VALUES " +
                 "(1, 'sebstreb@yolo.be', 'Yolo1234', 'Strebelle', 'Sebastien')");
         db.execSQL("INSERT OR IGNORE INTO user(ID, Login, Pass, Nom, Prenom) VALUES " +
                 "(2, 'pierreort@yolo.be', 'Yolo1234', 'Ortegat', 'Pierre')");
@@ -122,7 +122,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT OR IGNORE INTO user(ID, Login, Pass, Nom, Prenom) VALUES " +
                 "(6, 'angmerk@yolo.be', 'Yolo1234', 'Merkel', 'Angela')");
         db.execSQL("INSERT OR IGNORE INTO user(ID, Login, Pass, Nom, Prenom) VALUES " +
-                "(7, 'scarjo@yolo.be', 'Yolo1234', 'Johanson', 'Scarlet')");
+                "(7, 'scarjo@yolo.be', 'Yolo1234', 'Johanson', 'Scarlet')");*/
 
         db.execSQL("INSERT OR IGNORE INTO dispo VALUES (2,1,'2016-05-01 22:00:00')");
         db.execSQL("INSERT OR IGNORE INTO dispo VALUES (2,1,'2016-05-03 22:00:00')");
@@ -230,7 +230,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.open();
         String[] cols = {"Login", "Pass", "Nom", "Prenom", "Genre", "Age", "Cheveux", "Yeux", "Rue", "CodePost", "Localite", "Pays", "Telephone", "Inclinaison", "Facebook", "Langue", "Cacher_nom", "Cacher_adresse", "Cacher_telephone", "Cacher_facebook"};
         String[] args = {Integer.toString(id)};
-        Cursor cursor = db.query("user", cols, "ID = ?", args, null, null, null);
+        Cursor cursor = db.query("user", cols, "_id = ?", args, null, null, null);
         if (!cursor.moveToFirst())
             return null;
         String login = cursor.getString(0);
@@ -261,7 +261,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public UserTable getUser(String login) {
         SQLiteDatabase db = this.open();
-        String[] cols = {"ID", "Pass", "Nom", "Prenom", "Genre", "Age", "Cheveux", "Yeux", "Rue", "CodePost", "Localite", "Pays", "Telephone", "Inclinaison", "Facebook", "Langue", "Cacher_nom", "Cacher_adresse", "Cacher_telephone", "Cacher_facebook"};
+        String[] cols = {"_id", "Pass", "Nom", "Prenom", "Genre", "Age", "Cheveux", "Yeux", "Rue", "CodePost", "Localite", "Pays", "Telephone", "Inclinaison", "Facebook", "Langue", "Cacher_nom", "Cacher_adresse", "Cacher_telephone", "Cacher_facebook"};
         String[] args = {login};
         Cursor cursor = db.query("user", cols, "Login = ?", args, null, null, null);
         if (!cursor.moveToFirst())
@@ -294,7 +294,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public UserTable getUser(String prenom, String nom) {
         SQLiteDatabase db = this.open();
-        String[] cols = {"ID", "Login", "Pass", "Genre", "Age", "Cheveux", "Yeux", "Rue", "CodePost", "Localite", "Pays", "Telephone", "Inclinaison", "Facebook", "Langue", "Cacher_nom", "Cacher_adresse", "Cacher_telephone", "Cacher_facebook"};
+        String[] cols = {"_id", "Login", "Pass", "Genre", "Age", "Cheveux", "Yeux", "Rue", "CodePost", "Localite", "Pays", "Telephone", "Inclinaison", "Facebook", "Langue", "Cacher_nom", "Cacher_adresse", "Cacher_telephone", "Cacher_facebook"};
         String[] args = {prenom, nom};
         Cursor cursor = db.query("user", cols, "Prenom = ? AND Nom = ?", args, null, null, null);
         if (!cursor.moveToFirst())
@@ -344,7 +344,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + "'"+newValues[14]+"',"
                 + "'"+newValues[15]+"',"
                 + "'"+newValues[16]+"',"
-                + "'"+newValues[17]+"') WHERE user.ID ="+Integer.toString(id);
+                + "'"+newValues[17]+"') WHERE user._id ="+Integer.toString(id);
         db.execSQL(query);
         db.close();
     }
@@ -352,14 +352,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public int connect(String login, String password) {
         SQLiteDatabase db = this.open();
         String[] param = {login, password};
-        Cursor cursor = db.rawQuery("SELECT ID FROM user WHERE Login = ? AND Pass = ?", param);
+        Cursor cursor = db.rawQuery("SELECT _id FROM user WHERE Login = ? AND Pass = ?", param);
         try {
             if (!cursor.moveToFirst())
                 addUser(new UserTable(login, password));
         } catch (SQLiteConstraintException e) {
             return -1;
         }
-        Cursor cursor2 = db.rawQuery("SELECT ID FROM user WHERE Login = ? AND Pass = ?", param);
+        Cursor cursor2 = db.rawQuery("SELECT _id FROM user WHERE Login = ? AND Pass = ?", param);
         if (!cursor2.moveToFirst())
             return -1;
         int id = cursor2.getInt(0);
@@ -463,13 +463,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ArrayList<String> list = new ArrayList<String>();
         SQLiteDatabase database =  this.open();
         String[] param = {Integer.toString(myId)};
-        String query = "SELECT DISTINCT U.ID FROM user U, relations R WHERE (U.ID = ID_to and R.ID_from = ? and R.EtatReq = 1) or ( U.ID = R.ID_from and R.ID_to = ? and R.EtatReq = 1)";
+        String query = "SELECT DISTINCT U._id FROM user U, relations R WHERE (U.ID = ID_to and R.ID_from = ? and R.EtatReq = 1) or ( U.ID = R.ID_from and R.ID_to = ? and R.EtatReq = 1)";
         Cursor cursor = database.rawQuery(query, param);
         if (cursor.moveToFirst()) {
             do {
                 int IdAmi = cursor.getInt(0);
                 String[] param2 = {Integer.toString(IdAmi)};
-                Cursor cursor2 = database.rawQuery("SELECT Prenom, Nom FROM user WHERE ID = ?", param2);
+                Cursor cursor2 = database.rawQuery("SELECT Prenom, Nom FROM user WHERE _id = ?", param2);
                 cursor2.moveToFirst();
                 String prenom = cursor2.getString(0);
                 String nom = cursor2.getString(1);
