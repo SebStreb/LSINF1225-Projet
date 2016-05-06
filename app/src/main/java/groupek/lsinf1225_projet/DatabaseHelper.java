@@ -9,9 +9,14 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.text.DateFormat;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by alexandre on 5/2/16.
@@ -428,6 +433,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return res;
     }
 
+    public void saveDispo(int from, int to, Hashtable<Long, Boolean> fromDate, Hashtable<Long, Boolean> toDate){
+        SQLiteDatabase db = this.open();
+        String args[] = {""+from, ""+to, ""+to, ""+from};
+        db.delete("dispo", "ID_from = ? and ID_to = ? OR  ID_from = ? and ID_to = ?",args);
+        Set<Long> fromSet = fromDate.keySet();
+        Set<Long> toSet = toDate.keySet();
+        Long [] fromArray = new Long[fromSet.size()];
+        Long [] toArray = new Long[toSet.size()];
+        fromArray = fromSet.toArray(fromArray);
+        toArray = toSet.toArray(toArray);
+
+        Format form = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        for(int i = 0; i < fromArray.length; i++){
+            Date d = new Date(fromArray[i]);
+            db.execSQL("INSERT OR IGNORE INTO dispo VALUES ("+from+","+to+",'"+ form.format(d)+"')");
+        }
+
+        for(int i = 0; i < toArray.length; i++){
+            Date d = new Date(toArray[i]);
+            db.execSQL("INSERT OR IGNORE INTO dispo VALUES ("+to+","+from+",'"+ form.format(d)+"')");
+        }
+        db.close();
+
+    }
+
     public String[] listeAmis(int myId) {
         ArrayList<String> list = new ArrayList<String>();
         SQLiteDatabase database =  this.open();
@@ -451,5 +482,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         return list.toArray(new String[list.size()]);
     }
+
 
 }
