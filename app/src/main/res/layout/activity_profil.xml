@@ -95,7 +95,7 @@
             android:id="@+id/button"
             android:layout_width="300dp"
             android:layout_height="50dp"
-            android:layout_marginLeft="30dp"/>
+            android:layout_marginLeft="18dp"/>
 
         <!--useless as shit but needed to avoid the java crashing-->
         <EditText
