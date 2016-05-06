@@ -38,7 +38,7 @@ public class ProfilAmiFavActivity extends AppCompatActivity {
             public void onClick(View arg0) {
                 addFavoris(IdAmi, IdUser);
             }
-        }); //TODO: Remove from Favoris if exists
+        });
         Button bouttonCalendrier = (Button) findViewById(R.id.button4);
         bouttonCalendrier.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
@@ -48,6 +48,13 @@ public class ProfilAmiFavActivity extends AppCompatActivity {
                 b2.putInt("myID", IdUser);
                 intent.putExtras(b2);
                 startActivity(intent);
+            }
+        });
+
+        Button bouttonDelete = (Button) findViewById(R.id.button5);
+        bouttonDelete.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+                plusPoto(IdAmi, IdUser);
             }
         });
 
@@ -73,10 +80,36 @@ public class ProfilAmiFavActivity extends AppCompatActivity {
     public void addFavoris (int IdAmi, int IdUser) {
         DatabaseHelper dbb = new DatabaseHelper(this);
         SQLiteDatabase database =  dbb.open();
-        String requete = "UPDATE relations SET EtatReq = 2 WHERE ID_from = "+IdUser+" and ID_to = "+IdAmi+"";
+        String req = "SELECT EtatReq FROM relations WHERE ID_from = ? and ID_to = ?";
+        String[] param = {Integer.toString(IdUser) ,Integer.toString(IdAmi)};
+        Cursor cursor = database.rawQuery(req, param);
+        int etat = 0;
+        if (cursor.moveToFirst()) {
+            etat = cursor.getInt(0);
+        }
+        cursor.close();
+        String requete = null;
+        if (etat == 1) {
+            requete = "UPDATE relations SET EtatReq = 2 WHERE ID_from = " + IdUser + " and ID_to = " + IdAmi + "";
+            Toast.makeText(getApplicationContext(),
+                    "Ajoute en favoris !", Toast.LENGTH_LONG).show();
+        }
+        if (etat == 2) {
+            requete = "UPDATE relations SET EtatReq = 1 WHERE ID_from = " + IdUser + " and ID_to = " + IdAmi + "";
+            Toast.makeText(getApplicationContext(),
+                    "Retire des favoris !", Toast.LENGTH_LONG).show();
+        }
         database.execSQL(requete);
-        Toast.makeText(getApplicationContext(),
-                "Ajoute en favoris !", Toast.LENGTH_LONG).show();
+        dbb.close();
+    }
+
+    public void plusPoto (int IdAmi, int IdUser){
+        DatabaseHelper dbb = new DatabaseHelper(this);
+        SQLiteDatabase database =  dbb.open();
+        String requete = "UPDATE relations SET EtatReq = 3 WHERE ID_from = "+IdUser+" and ID_to = "+IdAmi+"";
+        database.execSQL(requete);
+        String requete2 = "UPDATE relations SET EtatReq = 3 WHERE ID_from = "+IdAmi+" and ID_to = "+IdUser+"";
+        database.execSQL(requete2);
         dbb.close();
     }
 }

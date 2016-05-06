@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.*;
 
@@ -52,7 +51,7 @@ public class MenuActivity extends AppCompatActivity {
                         newActivity.putExtras(b);
                         startActivity(newActivity);
                         break;
-                    case 2:  newActivity = new Intent(MenuActivity.this, Contact.class);
+                    case 2:  newActivity = new Intent(MenuActivity.this, ContactActivity.class);
                         b.putInt("id", ID);
                         newActivity.putExtras(b);
                         startActivity(newActivity);

@@ -8,10 +8,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class Contact extends AppCompatActivity {
+public class ContactActivity extends AppCompatActivity {
     public String[] contact = {
-            "AmisActivity",
-            "FavorisActivity"
+            "Amis",
+            "Favoris"
     };
 
     @Override
@@ -30,12 +30,12 @@ public class Contact extends AppCompatActivity {
                 int Id = b.getInt("id");
                 Intent newActivity;
                 switch(position){
-                    case 0:  newActivity = new Intent(Contact.this, AmisActivity.class);
+                    case 0:  newActivity = new Intent(ContactActivity.this, AmisActivity.class);
                         b.putInt("id", Id);
                         newActivity.putExtras(b);
                         startActivity(newActivity);
                         break;
-                    case 1:  newActivity = new Intent(Contact.this, FavorisActivity.class);
+                    case 1:  newActivity = new Intent(ContactActivity.this, FavorisActivity.class);
                         b.putInt("id", Id);
                         newActivity.putExtras(b);
                         startActivity(newActivity);
