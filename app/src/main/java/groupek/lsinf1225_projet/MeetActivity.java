@@ -32,9 +32,6 @@ public class MeetActivity extends AppCompatActivity {
     //internal var to handle the parameters and get the correct dates from the db
     int idFrom, idTo;
     Context context;
-    //TODO load here all the dates from the other one
-    //TODO load here all the dates from the current user
-    //TODO load the date sof the two user into the callendar
     private boolean undo = false;
     private CaldroidFragment caldroidFragment;
     private CaldroidFragment dialogCaldroidFragment;
@@ -125,16 +122,12 @@ public class MeetActivity extends AppCompatActivity {
 
         DatabaseHelper db = new DatabaseHelper(MeetActivity.this);
         Date userD[] = db.getDispo(this.idFrom, this.idTo);
-        //Date userD [] = {new Date(1464213540000l)};//for the debug
-        Log.wtf("Nb: ",""+userD.length);
-        Log.wtf("Exemple:",""+userD[0].toString());
         for (Date d : userD) {
             daysUser.put(d.getTime(), true);
             caldroidFragment.setBackgroundDrawableForDate(blueUser, new Date(d.getTime()));
         }
 
         Date userO[] = db.getDispo(this.idTo, this.idFrom);
-        //Date userO [] = {new Date(1464213540000l)};//for the debug
         for (Date d : userO) {
             daysOther.put(d.getTime(), true);
             if (into(d,userD)) {
@@ -220,7 +213,8 @@ public class MeetActivity extends AppCompatActivity {
     @Override
     protected void onPause(){
         super.onPause();
-        //TODO, remove the database of day for thoses two users and resave the days here
+        DatabaseHelper db = new DatabaseHelper(MeetActivity.this);
+        db.saveDispo(this.idFrom, this.idTo, daysUser, daysOther);
     }
 
     private boolean into(Date d, Date[] l){
