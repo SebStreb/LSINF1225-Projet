@@ -413,13 +413,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ArrayList<String> list = new ArrayList<String>();
         SQLiteDatabase database =  this.open();
         String[] param = {Integer.toString(myId)};
-        String query = "SELECT DISTINCT U.ID FROM user U, relations R WHERE (U.ID = ID_to and R.ID_from = ? and R.EtatReq = 1) or ( U.ID = R.ID_from and R.ID_to = ? and R.EtatReq = 1);";
+        String query = "SELECT DISTINCT U.ID FROM user U, relations R WHERE (U.ID = ID_to and R.ID_from = ? and R.EtatReq = 1) or ( U.ID = R.ID_from and R.ID_to = ? and R.EtatReq = 1)";
         Cursor cursor = database.rawQuery(query, param);
         if (cursor.moveToFirst()) {
             do {
                 int IdAmi = cursor.getInt(0);
                 String[] param2 = {Integer.toString(IdAmi)};
-                Cursor cursor2 = database.rawQuery("SELECT Prenom, Nom FROM user WHERE ID = ?;", param2);
+                Cursor cursor2 = database.rawQuery("SELECT Prenom, Nom FROM user WHERE ID = ?", param2);
                 cursor2.moveToFirst();
                 String prenom = cursor2.getString(0);
                 String nom = cursor2.getString(1);
