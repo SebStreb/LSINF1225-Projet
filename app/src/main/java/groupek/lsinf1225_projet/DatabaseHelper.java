@@ -144,6 +144,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT OR IGNORE INTO relations VALUES (5,2,1)");
         db.execSQL("INSERT OR IGNORE INTO relations VALUES (5,3,1)");
         db.execSQL("INSERT OR IGNORE INTO relations VALUES (5,1,1)");
+        db.execSQL("INSERT OR IGNORE INTO relations VALUES (1,5,1)");
         db.execSQL("INSERT OR IGNORE INTO relations VALUES (5,4,2)");
     }
 
@@ -185,14 +186,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public MessageTable[] getAllMessage(int ID_from, int ID_to) {
         List<MessageTable> list = new ArrayList<>();
         SQLiteDatabase db = this.open();
-        String[] cols = {"Content", "Time"};
+        String[] cols = {"ID_from", "ID_to", "Content", "Time"};
         String[] args = {Integer.toString(ID_from), Integer.toString(ID_to), Integer.toString(ID_to), Integer.toString(ID_from)};
         Cursor cursor = db.query("messages", cols, "ID_from = ? AND ID_to = ? OR ID_from = ? AND ID_to = ?", args, null, null, "Time ASC");
         if (cursor.moveToFirst()) {
             do {
-                String content = cursor.getString(0);
-                String time = cursor.getString(1);
-                MessageTable message = new MessageTable(ID_from, ID_to, content, time);
+                ID_from = cursor.getInt(0);
+                ID_to = cursor.getInt(1);
+                String content = cursor.getString(2);
+                String time = cursor.getString(3);
+                MessageTable message = new MessageTable(ID_from, ID_to, time, content);
                 list.add(message);
             } while (cursor.moveToNext());
         }

@@ -38,7 +38,7 @@ public class ProfilAmiFavActivity extends AppCompatActivity {
             public void onClick(View arg0) {
                 addFavoris(IdAmi, IdUser);
             }
-        });
+        }); //TODO: Remove from Favoris if exists
         Button bouttonCalendrier = (Button) findViewById(R.id.button4);
         bouttonCalendrier.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
@@ -56,7 +56,7 @@ public class ProfilAmiFavActivity extends AppCompatActivity {
 
 
 
-    public byte[][] getPhotosFromDB(DatabaseHelper db, int user_id) {
+    public byte[][] getPhotosFromDB(DatabaseHelper db, int user_id) { //TODO: Add photo in BDD to test
         String[] user = new String[1];
         user[0] = Integer.toString(user_id);
         SQLiteDatabase myDB = db.getReadableDatabase();
