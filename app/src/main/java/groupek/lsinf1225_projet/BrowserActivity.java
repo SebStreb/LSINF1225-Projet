@@ -31,7 +31,7 @@ public class BrowserActivity extends AppCompatActivity {
     private String couleur_yeux;
     private String inclinaison;
     private Bitmap bmpProfilePicture;
-    private int mode = 1;
+    private int mode;
     private UserTable[] users;
 
     @Override
@@ -66,13 +66,18 @@ public class BrowserActivity extends AppCompatActivity {
         this.users = getOtherUsers(db);
         final UserTable user = users[index];
 
-        PhotoTable[] userPhotos = db.getAllPhotos(user.getId());
+        // PhotoTable[] userPhotos = db.getAllPhotos(user.getId());
 
         ImageView profilePicture = (ImageView)findViewById(R.id.profile_picture);
         // profilePicture.setImageBitmap(userPhotos[0]);
 
         TextView nom_text = (TextView)findViewById(R.id.nom);
-        nom_text.setText(user.getPrenom() + " " + user.getNom());
+        if(user.getCacherNom()) {
+            nom_text.setText(user.getPrenom());
+        }
+        else {
+            nom_text.setText(user.getPrenom() + " " + user.getNom());
+        }
 
         TextView genre_text = (TextView)findViewById(R.id.genre);
         genre_text.setText(user.getGenre());
@@ -81,7 +86,12 @@ public class BrowserActivity extends AppCompatActivity {
         couleur_cheveux_text.setText(user.getCheveux());
 
         TextView localite_text = (TextView)findViewById(R.id.localite);
-        localite_text.setText(user.getLocalite());
+        if(user.getCacherAdresse()) {
+            localite_text.setText("adresse cachée");
+        }
+        else {
+            localite_text.setText(user.getLocalite());
+        }
 
         TextView age_text = (TextView)findViewById(R.id.age);
         age_text.setText(user.getAge());
@@ -137,7 +147,12 @@ public class BrowserActivity extends AppCompatActivity {
 
                 Intent myIntent = new Intent(BrowserActivity.this, BrowserActivity.class);
 
-                myIntent.putExtra("index", setPreviousIndex(index, users.length));
+                Bundle bundle = new Bundle();
+                bundle.putInt("id", ID);
+                bundle.putInt("index", setPreviousIndex(index, users.length));
+                bundle.putInt("mode", mode);
+
+                myIntent.putExtras(bundle);
 
                 finish();
                 startActivity(myIntent);
@@ -150,8 +165,12 @@ public class BrowserActivity extends AppCompatActivity {
                 // passer la personne mais garder la possibilité de l'afficher par la suite
 
                 Intent myIntent = new Intent(BrowserActivity.this, BrowserActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("id", ID);
+                bundle.putInt("index", setNextIndex(index, users.length));
+                bundle.putInt("mode", mode);
 
-                myIntent.putExtra("index", setNextIndex(index, users.length));
+                myIntent.putExtras(bundle);
 
                 finish();
                 startActivity(myIntent);
@@ -358,25 +377,5 @@ public class BrowserActivity extends AppCompatActivity {
     public int getOther_user_id() { return this.other_user_id; }
     public int getIndex() { return this.index; }
     public int getMode() { return this.mode; }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.browser_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case (R.id.browser_menu_edit):
-                break;
-            case (R.id.browser_menu_add):
-                break;
-            case (R.id.browser_menu_delete):
-                break;
-
-        }
-        return true;
-    }
 
 }
