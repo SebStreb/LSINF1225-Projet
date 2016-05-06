@@ -22,7 +22,7 @@
         android:layout_height="150dp"
         android:id="@+id/imageView2"
         android:layout_alignParentRight="true"
-        android:src="@drawable/Profil"
+        android:src="@drawable/profil"
         android:layout_alignParentEnd="true" />
 
     <Button
