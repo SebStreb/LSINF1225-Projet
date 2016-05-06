@@ -56,14 +56,15 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String messageText = messageET.getText().toString();
+                String date = DateFormat.getDateTimeInstance().format(new Date());
                 if (TextUtils.isEmpty(messageText))
                     return;
                 DatabaseHelper db = new DatabaseHelper(con);
-                MessageTable message = new MessageTable(me.getId(), other.getId(), messageText);
+                MessageTable message = new MessageTable(me.getId(), other.getId(), date, messageText);
                 db.addMessage(message);
                 ChatMessage chatMessage = new ChatMessage();
                 chatMessage.setMessage(messageText);
-                chatMessage.setDate(DateFormat.getDateTimeInstance().format(new Date()));
+                chatMessage.setDate(date);
                 chatMessage.setMe(true);
 
                 messageET.setText("");

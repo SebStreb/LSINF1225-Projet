@@ -7,9 +7,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
-public class Contact extends AppCompatActivity {
+public class ContactActivity extends AppCompatActivity {
     public String[] contact = {
             "Amis",
             "Favoris"
@@ -31,12 +30,12 @@ public class Contact extends AppCompatActivity {
                 int Id = b.getInt("id");
                 Intent newActivity;
                 switch(position){
-                    case 0:  newActivity = new Intent(Contact.this, Amis.class);
+                    case 0:  newActivity = new Intent(ContactActivity.this, AmisActivity.class);
                         b.putInt("id", Id);
                         newActivity.putExtras(b);
                         startActivity(newActivity);
                         break;
-                    case 1:  newActivity = new Intent(Contact.this, Favoris.class);
+                    case 1:  newActivity = new Intent(ContactActivity.this, FavorisActivity.class);
                         b.putInt("id", Id);
                         newActivity.putExtras(b);
                         startActivity(newActivity);
