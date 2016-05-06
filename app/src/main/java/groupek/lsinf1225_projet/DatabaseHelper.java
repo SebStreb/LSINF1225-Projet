@@ -333,26 +333,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void updateUser(int id, String[] newValues){
         SQLiteDatabase db =  this.open();
-        String query = "REPLACE INTO user(Nom, Prenom, Genre, Age, Cheveux, Yeux, Rue, CodePost, Localite, Pays, Telephone, Inclinaison, Facebook, Langue, Cacher_nom, Cacher_adresse, Cacher_telephone, Cacher_facebook) VALUES("
-                + "'"+newValues[0]+"',"
-                + "'"+newValues[1]+"',"
-                + "'"+newValues[2]+"',"
-                + "'"+newValues[3]+"',"
-                + "'"+newValues[4]+"',"
-                + "'"+newValues[5]+"',"
-                + "'"+newValues[6]+"',"
-                + "'"+newValues[7]+"',"
-                + "'"+newValues[8]+"',"
-                + "'"+newValues[9]+"',"
-                + "'"+newValues[10]+"',"
-                + "'"+newValues[11]+"',"
-                + "'"+newValues[12]+"',"
-                + "'"+newValues[13]+"',"
-                + "'"+newValues[14]+"',"
-                + "'"+newValues[15]+"',"
-                + "'"+newValues[16]+"',"
-                + "'"+newValues[17]+"') WHERE user._id ="+Integer.toString(id);
-        db.execSQL(query);
+        ContentValues val = new ContentValues();
+        val.put("Nom", newValues[0]);
+        val.put("Prenom", newValues[1]);
+        val.put("Genre", newValues[2]);
+        val.put("Age", newValues[3]);
+        val.put("Cheveux", newValues[4]);
+        val.put("Yeux", newValues[5]);
+        val.put("Rue", newValues[6]);
+        val.put("CodePost", newValues[7]);
+        val.put("Localite", newValues[8]);
+        val.put("Pays", newValues[9]);
+        val.put("Telephone", newValues[10]);
+        val.put("Inclinaison", newValues[11]);
+        val.put("Facebook", newValues[12]);
+        val.put("Langue", newValues[13]);
+        val.put("Cacher_nom", newValues[14]);
+        val.put("Cacher_adresse", newValues[15]);
+        val.put("Cacher_telephone", newValues[16]);
+        val.put("Cacher_facebook", newValues[17]);
+        String[] param = {Integer.toString(id)};
+        db.update("user", val, "user._id = ?", param);
         db.close();
     }
 

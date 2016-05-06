@@ -188,11 +188,19 @@ public class ProfilActivity extends AppCompatActivity {
     }
 
     public void fill(int id){
-        Log.wtf("fill",Integer.toString(id));
         UserTable user = dh.getUser(this.id);
+
+        EditText nom = (EditText) findViewById(R.id.editTextNom);
         caracs[0] = user.getNom();
+        nom.setText(caracs[0]);
+
+        EditText prenom = (EditText) findViewById(R.id.editTextPrenom);
         caracs[1] = user.getPrenom();
+        prenom.setText(caracs[1]);
+
         caracs[2] = user.getGenre();
+
+
         caracs[3] = user.getAge();
         caracs[4] = user.getCheveux();
         caracs[5] = user.getYeux();
