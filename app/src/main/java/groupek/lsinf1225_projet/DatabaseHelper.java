@@ -26,7 +26,7 @@ import java.util.Set;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "GroupeK_BDD.sqlite";
-    private static final int DB_VERSION = 3;
+    private static final int DB_VERSION = 4;
 
 
     public DatabaseHelper(Context context){
@@ -97,15 +97,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "\tJour datetime not null,\n" +
                 "\tforeign key (ID_from) references user,\n" +
                 "\tforeign key (ID_to) references user\n" +
-                ");");
-
-        db.execSQL("create table if not exists rencontre (\n" +
-                "\tID_user1  integer not null,\n" +
-                "\tID_user2  integer not null,\n" +
-                "\tJour datetime not null,\n" +
-                "\tunique (ID_user1, ID_user2, jour),\n" +
-                "\tforeign key (ID_user1) references user,\n" +
-                "\tforeign key (ID_user2) references user\n" +
                 ");");
 
         db.execSQL("INSERT OR IGNORE INTO user(Login, Pass, Nom, Prenom) VALUES " +
@@ -380,7 +371,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public PhotoTable[] getAllPhotos(int id){
         List<PhotoTable> list = new ArrayList<>();
         SQLiteDatabase db = this.open();
-        String[] cols = {"nom","image"}; // select nom, image from photos where photos.ID_user = id
+        String[] cols = {"Nom","Photo"};
         String[] args = {Integer.toString(id)};
         Cursor cursor = db.query("photos", cols, "photos.ID_user = ?", args, null, null, null);
         if (cursor.moveToFirst()) {
@@ -396,32 +387,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return list.toArray(new PhotoTable[list.size()]);
     }
 
-    /*    Rencontre    */
-    public void addRencontre(RencontreTable rencontre){
-        SQLiteDatabase db = this.open();
-        ContentValues content = new ContentValues();
-        content.put("ID_user1",rencontre.getID_user1());
-        content.put("ID_user2", rencontre.getID_user2());
-        content.put("Jour", rencontre.getJour());
-        db.insert("rencontre",null,content);
-        db.close();
-    }
-
     /*    Dispo    */
-    public void deleteDispo(DispoTable dispo){
-        SQLiteDatabase db = this.open();
-        String [] params = new String[3];
-        params[0] = Integer.toString(dispo.getID_from());
-        params[1] = Integer.toString(dispo.getID_to());
-        params[2] = dispo.getJour();
-        db.delete("dispo", "dispo.ID_from = ? AND dispo.ID_to = ? AND dispo.jour = ?", params);
-        db.close();
-    }
-
-    //Querry: SELECT strftime('%s', d.Jour) AS "timestamps" FROM dispo d WHERE d.ID_from = ? AND d.ID_to = ?
     public Date[] getDispo(int from, int to){
         SQLiteDatabase db = this.open();
-
         String args [] = new String[2], col [] = new String[1];
         args[0] = Integer.toString(from);
         args[1] = Integer.toString(to);
