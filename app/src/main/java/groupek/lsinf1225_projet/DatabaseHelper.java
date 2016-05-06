@@ -9,9 +9,14 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.text.DateFormat;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by alexandre on 5/2/16.
@@ -21,18 +26,17 @@ import java.util.List;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "GroupeK_BDD.sqlite";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 3;
 
 
     public DatabaseHelper(Context context){
         super(context,DB_NAME,null,DB_VERSION);
-        onCreate(getWritableDatabase());
     }
 
 
     public void onCreate(SQLiteDatabase db){
         db.execSQL("create table if not exists user (\n" +
-                "\tID integer auto_increment primary key unique,\n" +
+                "\t_id integer primary key autoincrement,\n" +
                 "\tLogin char not null unique,\n" +
                 "\tPass char not null,\n" +
                 "\tNom char not null default 'vide',\n" +
@@ -55,7 +59,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "\tCacher_facebook bool not null default true\n" +
                 ");\n");
 
-        db.execSQL("create unique index if not exists INDEX_ID on user(ID);");
+        db.execSQL("create unique index if not exists INDEX_ID on user(_id);");
 
         db.execSQL("create table if not exists messages (\n" +
                 "\tID_from  integer not null,\n" +
@@ -104,20 +108,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "\tforeign key (ID_user2) references user\n" +
                 ");");
 
-        db.execSQL("INSERT OR IGNORE INTO user(ID, Login, Pass, Nom, Prenom) VALUES " +
-                "(1, 'sebstreb@yolo.be', 'Yolo1234', 'Strebelle', 'Sebastien')");
-        db.execSQL("INSERT OR IGNORE INTO user(ID, Login, Pass, Nom, Prenom) VALUES " +
-                "(2, 'pierreort@yolo.be', 'Yolo1234', 'Ortegat', 'Pierre')");
-        db.execSQL("INSERT OR IGNORE INTO user(ID, Login, Pass, Nom, Prenom) VALUES " +
-                "(3, 'alexrucq@yolo.be', 'Yolo1234', 'Rucquoy', 'Alexandre')");
-        db.execSQL("INSERT OR IGNORE INTO user(ID, Login, Pass, Nom, Prenom) VALUES " +
-                "(4, 'antoinepop@yolo.be', 'Yolo1234', 'Popeler', 'Antoine')");
-        db.execSQL("INSERT OR IGNORE INTO user(ID, Login, Pass, Nom, Prenom) VALUES " +
-                "(5, 'damienvan@yolo.be', 'Yolo1234', 'Vaneberk', 'Damien')");
-        db.execSQL("INSERT OR IGNORE INTO user(ID, Login, Pass, Nom, Prenom) VALUES " +
-                "(6, 'angmerk@yolo.be', 'Yolo1234', 'Merkel', 'Angela')");
-        db.execSQL("INSERT OR IGNORE INTO user(ID, Login, Pass, Nom, Prenom) VALUES " +
-                "(7, 'scarjo@yolo.be', 'Yolo1234', 'Johanson', 'Scarlet')");
+        db.execSQL("INSERT OR IGNORE INTO user(Login, Pass, Nom, Prenom) VALUES " +
+                "('sebstreb@yolo.be', 'Yolo1234', 'Strebelle', 'Sebastien')");
+        db.execSQL("INSERT OR IGNORE INTO user(Login, Pass, Nom, Prenom) VALUES " +
+                "('pierreort@yolo.be', 'Yolo1234', 'Ortegat', 'Pierre')");
+        db.execSQL("INSERT OR IGNORE INTO user(Login, Pass, Nom, Prenom) VALUES " +
+                "('alexrucq@yolo.be', 'Yolo1234', 'Rucquoy', 'Alexandre')");
+        db.execSQL("INSERT OR IGNORE INTO user(Login, Pass, Nom, Prenom) VALUES " +
+                "('antoinepop@yolo.be', 'Yolo1234', 'Popeler', 'Antoine')");
+        db.execSQL("INSERT OR IGNORE INTO user(Login, Pass, Nom, Prenom) VALUES " +
+                "('damienvan@yolo.be', 'Yolo1234', 'Vaneberk', 'Damien')");
+        db.execSQL("INSERT OR IGNORE INTO user(Login, Pass, Nom, Prenom) VALUES " +
+                "('angmerk@yolo.be', 'Yolo1234', 'Merkel', 'Angela')");
+        db.execSQL("INSERT OR IGNORE INTO user(Login, Pass, Nom, Prenom) VALUES " +
+                "('scarjo@yolo.be', 'Yolo1234', 'Johanson', 'Scarlet')");
 
         db.execSQL("INSERT OR IGNORE INTO dispo VALUES (2,1,'2016-05-01 22:00:00')");
         db.execSQL("INSERT OR IGNORE INTO dispo VALUES (2,1,'2016-05-03 22:00:00')");
@@ -136,6 +140,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT OR IGNORE INTO dispo VALUES (1,2,'2016-05-12 22:00:00')");
         db.execSQL("INSERT OR IGNORE INTO dispo VALUES (1,2,'2016-05-15 22:00:00')");
         db.execSQL("INSERT OR IGNORE INTO dispo VALUES (1,2,'2016-05-17 22:00:00')");
+
+        db.execSQL("INSERT OR IGNORE INTO relations VALUES (5,2,1)");
+        db.execSQL("INSERT OR IGNORE INTO relations VALUES (5,3,1)");
+        db.execSQL("INSERT OR IGNORE INTO relations VALUES (5,1,1)");
+        db.execSQL("INSERT OR IGNORE INTO relations VALUES (5,4,2)");
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion ){ //en cas de modification majeure dans la bdd, supprime tout et reconstruit tout en incrementant DB_VERSION (SQLite oblige -_-)
@@ -225,7 +234,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.open();
         String[] cols = {"Login", "Pass", "Nom", "Prenom", "Genre", "Age", "Cheveux", "Yeux", "Rue", "CodePost", "Localite", "Pays", "Telephone", "Inclinaison", "Facebook", "Langue", "Cacher_nom", "Cacher_adresse", "Cacher_telephone", "Cacher_facebook"};
         String[] args = {Integer.toString(id)};
-        Cursor cursor = db.query("user", cols, "ID = ?", args, null, null, null);
+        Cursor cursor = db.query("user", cols, "_id = ?", args, null, null, null);
         if (!cursor.moveToFirst())
             return null;
         String login = cursor.getString(0);
@@ -256,7 +265,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public UserTable getUser(String login) {
         SQLiteDatabase db = this.open();
-        String[] cols = {"ID", "Pass", "Nom", "Prenom", "Genre", "Age", "Cheveux", "Yeux", "Rue", "CodePost", "Localite", "Pays", "Telephone", "Inclinaison", "Facebook", "Langue", "Cacher_nom", "Cacher_adresse", "Cacher_telephone", "Cacher_facebook"};
+        String[] cols = {"_id", "Pass", "Nom", "Prenom", "Genre", "Age", "Cheveux", "Yeux", "Rue", "CodePost", "Localite", "Pays", "Telephone", "Inclinaison", "Facebook", "Langue", "Cacher_nom", "Cacher_adresse", "Cacher_telephone", "Cacher_facebook"};
         String[] args = {login};
         Cursor cursor = db.query("user", cols, "Login = ?", args, null, null, null);
         if (!cursor.moveToFirst())
@@ -289,7 +298,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public UserTable getUser(String prenom, String nom) {
         SQLiteDatabase db = this.open();
-        String[] cols = {"ID", "Login", "Pass", "Genre", "Age", "Cheveux", "Yeux", "Rue", "CodePost", "Localite", "Pays", "Telephone", "Inclinaison", "Facebook", "Langue", "Cacher_nom", "Cacher_adresse", "Cacher_telephone", "Cacher_facebook"};
+        String[] cols = {"_id", "Login", "Pass", "Genre", "Age", "Cheveux", "Yeux", "Rue", "CodePost", "Localite", "Pays", "Telephone", "Inclinaison", "Facebook", "Langue", "Cacher_nom", "Cacher_adresse", "Cacher_telephone", "Cacher_facebook"};
         String[] args = {prenom, nom};
         Cursor cursor = db.query("user", cols, "Prenom = ? AND Nom = ?", args, null, null, null);
         if (!cursor.moveToFirst())
@@ -319,7 +328,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return user;
     }
 
-    public void updateUser(UserTable user, String[] newValues){
+    public void updateUser(int id, String[] newValues){
         SQLiteDatabase db =  this.open();
         String query = "REPLACE INTO user(Nom, Prenom, Genre, Age, Cheveux, Yeux, Rue, CodePost, Localite, Pays, Telephone, Inclinaison, Facebook, Langue, Cacher_nom bool, Cacher_adresse, Cacher_telephone, Cacher_facebook) VALUES("
                 + "'"+newValues[0]+"',"
@@ -339,7 +348,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + "'"+newValues[14]+"',"
                 + "'"+newValues[15]+"',"
                 + "'"+newValues[16]+"',"
-                + "'"+newValues[17]+"') WHERE user.ID ="+Integer.toString(user.getId());
+                + "'"+newValues[17]+"') WHERE user._id ="+Integer.toString(id);
         db.execSQL(query);
         db.close();
     }
@@ -347,14 +356,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public int connect(String login, String password) {
         SQLiteDatabase db = this.open();
         String[] param = {login, password};
-        Cursor cursor = db.rawQuery("SELECT ID FROM user WHERE Login = ? AND Pass = ?", param);
+        Cursor cursor = db.rawQuery("SELECT _id FROM user WHERE Login = ? AND Pass = ?", param);
         try {
             if (!cursor.moveToFirst())
                 addUser(new UserTable(login, password));
         } catch (SQLiteConstraintException e) {
             return -1;
         }
-        Cursor cursor2 = db.rawQuery("SELECT ID FROM user WHERE Login = ? AND Pass = ?", param);
+        Cursor cursor2 = db.rawQuery("SELECT _id FROM user WHERE Login = ? AND Pass = ?", param);
         if (!cursor2.moveToFirst())
             return -1;
         int id = cursor2.getInt(0);
@@ -362,6 +371,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor2.close();
         db.close();
         return id;
+    }
+
+    public PhotoTable[] getAllPhotos(int id){
+        List<PhotoTable> list = new ArrayList<>();
+        SQLiteDatabase db = this.open();
+        String[] cols = {"nom","image"}; // select nom, image from photos where photos.ID_user = id
+        String[] args = {Integer.toString(id)};
+        Cursor cursor = db.query("photos", cols, "photos.ID_user = ?", args, null, null, null);
+        if (cursor.moveToFirst()) {
+            do {
+                String nom = cursor.getString(0);
+                byte[] bmp = cursor.getBlob(1);
+                PhotoTable photos = new PhotoTable(id,nom,bmp);
+                list.add(photos);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return list.toArray(new PhotoTable[list.size()]);
     }
 
     /*    Rencontre    */
@@ -409,17 +437,43 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return res;
     }
 
+    public void saveDispo(int from, int to, Hashtable<Long, Boolean> fromDate, Hashtable<Long, Boolean> toDate){
+        SQLiteDatabase db = this.open();
+        String args[] = {""+from, ""+to, ""+to, ""+from};
+        db.delete("dispo", "ID_from = ? and ID_to = ? OR  ID_from = ? and ID_to = ?",args);
+        Set<Long> fromSet = fromDate.keySet();
+        Set<Long> toSet = toDate.keySet();
+        Long [] fromArray = new Long[fromSet.size()];
+        Long [] toArray = new Long[toSet.size()];
+        fromArray = fromSet.toArray(fromArray);
+        toArray = toSet.toArray(toArray);
+
+        Format form = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        for(int i = 0; i < fromArray.length; i++){
+            Date d = new Date(fromArray[i]);
+            db.execSQL("INSERT OR IGNORE INTO dispo VALUES ("+from+","+to+",'"+ form.format(d)+"')");
+        }
+
+        for(int i = 0; i < toArray.length; i++){
+            Date d = new Date(toArray[i]);
+            db.execSQL("INSERT OR IGNORE INTO dispo VALUES ("+to+","+from+",'"+ form.format(d)+"')");
+        }
+        db.close();
+
+    }
+
     public String[] listeAmis(int myId) {
         ArrayList<String> list = new ArrayList<String>();
         SQLiteDatabase database =  this.open();
         String[] param = {Integer.toString(myId)};
-        String query = "SELECT DISTINCT U.ID FROM user U, relations R WHERE (U.ID = ID_to and R.ID_from = ? and R.EtatReq = 1) or ( U.ID = R.ID_from and R.ID_to = ? and R.EtatReq = 1);";
+        String query = "SELECT DISTINCT U._id FROM user U, relations R WHERE (U._id = R.ID_to and R.ID_from = ? and R.EtatReq = 1) or ( U._id = R.ID_from and R.ID_to = ? and R.EtatReq = 1)";
         Cursor cursor = database.rawQuery(query, param);
         if (cursor.moveToFirst()) {
             do {
                 int IdAmi = cursor.getInt(0);
                 String[] param2 = {Integer.toString(IdAmi)};
-                Cursor cursor2 = database.rawQuery("SELECT Prenom, Nom FROM user WHERE ID = ?;", param2);
+                Cursor cursor2 = database.rawQuery("SELECT Prenom, Nom FROM user WHERE _id = ?", param2);
                 cursor2.moveToFirst();
                 String prenom = cursor2.getString(0);
                 String nom = cursor2.getString(1);
@@ -437,7 +491,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ArrayList<AmisActivity> list = new ArrayList<AmisActivity>();
         SQLiteDatabase database =  this.open();
         String[] param = {Integer.toString(IdUtilisateur)};
-        String requete = "SELECT DISTINCT U.ID FROM user U, relations R WHERE (U.ID = ID_to and R.ID_from = ? and R.EtatReq = 1) or ( U.ID = R.ID_from and R.ID_to = ? and R.EtatReq = 1)";
+        String requete = "SELECT DISTINCT U._id FROM user U, relations R WHERE (U._id = R.ID_to and R.ID_from = ? and R.EtatReq = 1) or ( U._id = R.ID_from and R.ID_to = ? and R.EtatReq = 1)";
         Cursor cursor = database.rawQuery(requete, param);
         int IdAmi;
         AmisActivity ami;
@@ -462,7 +516,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ArrayList<FavorisActivity> list = new ArrayList<FavorisActivity>();
         SQLiteDatabase database =  this.open();
         String[] param = {Integer.toString(IdUtilisateur)};
-        String requete = "SELECT DISTINCT U.ID FROM user U, relations R WHERE (U.ID = ID_to and R.ID_from = ? and R.EtatReq = 2) or ( U.ID = R.ID_from and R.ID_to = ? and R.EtatReq = 1)";
+        String requete = "SELECT DISTINCT U._id FROM user U, relations R WHERE (U._id = R.ID_to and R.ID_from = ? and R.EtatReq = 2) or ( U._id = R.ID_from and R.ID_to = ? and R.EtatReq = 1)";
         Cursor cursor = database.rawQuery(requete, param);
         int IdFav;
         FavorisActivity fav;
@@ -514,4 +568,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         list.add(poto.getLangue());
         return list.toArray(new String[list.size()]);
     }
+
 }

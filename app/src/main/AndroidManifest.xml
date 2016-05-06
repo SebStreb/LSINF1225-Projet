@@ -22,12 +22,11 @@
         <activity android:name=".MenuActivity" />
         <activity android:name=".ProfilActivity" />
         <activity android:name=".Contact" />
-        <activity android:name=".Amis" />
-        <activity android:name=".Favoris" />
-        <activity android:name=".ProfilAmiFav" />
+        <activity android:name=".AmisActivity" />
+        <activity android:name=".FavorisActivity" />
+        <activity android:name=".ProfilAmiFavActivity" />
         <activity android:name=".MeetActivity" />
-        <activity android:name=".BrowserActivity">
-        </activity>
+        <activity android:name=".BrowserActivity" />
         <activity android:name=".MessagerieActivity" />
         <activity android:name=".ChatActivity" />
     </application>
