@@ -337,13 +337,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
             cursor.close();
 
-            Cursor cursor2 = db.rawQuery("SELECT ID FROM user WHERE user.Login = ? AND user.Pass = ?",param);
+            Cursor cursor2 = db.rawQuery("SELECT _id FROM user WHERE user.Login = ? AND user.Pass = ?",param);
             cursor2.moveToFirst();
             this.id = cursor2.getInt(0);
             if (cursor2.getCount() > 0)
             {
                 cursor2.moveToFirst();
-                this.id = cursor2.getInt(cursor2.getColumnIndex("ID"));
+                this.id = cursor2.getInt(cursor2.getColumnIndex("_id"));
             }
             cursor2.close();
             db.close();

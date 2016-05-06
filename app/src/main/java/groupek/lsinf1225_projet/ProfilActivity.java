@@ -4,7 +4,9 @@ import android.app.Dialog;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ListView;
 import java.util.ArrayList;
@@ -29,12 +31,19 @@ public class ProfilActivity extends AppCompatActivity {
     ExpandableListView expListView;
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
+    private String [] caracs; // tableau qui contient les données profils d'un user
+    private int id;
+    DatabaseHelper dh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profil);
-
+        dh = new DatabaseHelper(this);
+        Bundle b = getIntent().getExtras();
+        this.id = b.getInt("id");
+        //this.id = 1;
+        Log.wtf("ca marche pas sa mere",Integer.toString(id));
         // get the listview
         expListView = (ExpandableListView) findViewById(R.id.expandableListView);
 
@@ -49,10 +58,6 @@ public class ProfilActivity extends AppCompatActivity {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
-                if (listDataHeader.get(groupPosition) == "Nom"){
-                    Dialog dial = new Dialog(ProfilActivity.this);
-
-                }
                 Toast.makeText(
                         getApplicationContext(),
                         listDataHeader.get(groupPosition)
@@ -65,7 +70,42 @@ public class ProfilActivity extends AppCompatActivity {
                 return false;
             }
         });
+        caracs = new String[21];
+        fill(this.id); //remplis le tableau carac avec les valeurs deja presentes en bdd
 
+        Button clickButton = (Button) findViewById(R.id.button);
+        clickButton.setOnClickListener( new View.OnClickListener() { // quand l'user clique sur le bouton enregistrer et quitter
+            @Override
+            public void onClick(View v) {
+                dh.updateUser(id,caracs);
+                finish();
+            }
+        });
+
+
+    }
+
+    public void fill(int id){
+        Log.wtf("fill",Integer.toString(id));
+        UserTable user = dh.getUser(this.id);
+        caracs[3] = user.getNom();
+        caracs[4] = user.getPrenom();
+        caracs[5] = user.getGenre();
+        caracs[6] = user.getAge();
+        caracs[7] = user.getCheveux();
+        caracs[8] = user.getYeux();
+        caracs[9] = user.getRue();
+        caracs[10] = Integer.toString(user.getCodePost());
+        caracs[11] = user.getLocalite();
+        caracs[12] = user.getPays();
+        caracs[13] = user.getTelephone();
+        caracs[14] = user.getInclinaison();
+        caracs[15] = user.getFacebook();
+        caracs[16] = user.getLangue();
+        caracs[17] = Boolean.toString(user.getCacherNom());
+        caracs[18] = Boolean.toString(user.getCacherAdresse());
+        caracs[19] = Boolean.toString(user.getCacherTelephone());
+        caracs[20] = Boolean.toString(user.getCacherFacebook());
     }
 
     /*

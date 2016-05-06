@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -135,11 +136,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT OR IGNORE INTO dispo VALUES (1,2,'2016-05-12 22:00:00')");
         db.execSQL("INSERT OR IGNORE INTO dispo VALUES (1,2,'2016-05-15 22:00:00')");
         db.execSQL("INSERT OR IGNORE INTO dispo VALUES (1,2,'2016-05-17 22:00:00')");
-
-        db.execSQL("INSERT OR IGNORE INTO relations VALUES (5,2,1)");
-        db.execSQL("INSERT OR IGNORE INTO relations VALUES (5,3,1)");
-        db.execSQL("INSERT OR IGNORE INTO relations VALUES (5,1,1)");
-        db.execSQL("INSERT OR IGNORE INTO relations VALUES (5,4,2)");
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion ){ //en cas de modification majeure dans la bdd, supprime tout et reconstruit tout en incrementant DB_VERSION (SQLite oblige -_-)
