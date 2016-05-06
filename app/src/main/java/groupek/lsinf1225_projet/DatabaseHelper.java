@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -136,6 +135,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT OR IGNORE INTO dispo VALUES (1,2,'2016-05-12 22:00:00')");
         db.execSQL("INSERT OR IGNORE INTO dispo VALUES (1,2,'2016-05-15 22:00:00')");
         db.execSQL("INSERT OR IGNORE INTO dispo VALUES (1,2,'2016-05-17 22:00:00')");
+
+        db.execSQL("INSERT OR IGNORE INTO relations VALUES (5,2,1)");
+        db.execSQL("INSERT OR IGNORE INTO relations VALUES (5,3,1)");
+        db.execSQL("INSERT OR IGNORE INTO relations VALUES (5,1,1)");
+        db.execSQL("INSERT OR IGNORE INTO relations VALUES (5,4,2)");
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion ){ //en cas de modification majeure dans la bdd, supprime tout et reconstruit tout en incrementant DB_VERSION (SQLite oblige -_-)
@@ -433,4 +437,85 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return list.toArray(new String[list.size()]);
     }
 
+    public AmisActivity[] potoSearchAmis(int IdUtilisateur){
+        ArrayList<AmisActivity> list = new ArrayList<AmisActivity>();
+        SQLiteDatabase database =  this.open();
+        String[] param = {Integer.toString(IdUtilisateur)};
+        String requete = "SELECT DISTINCT U.ID FROM user U, relations R WHERE (U.ID = ID_to and R.ID_from = ? and R.EtatReq = 1) or ( U.ID = R.ID_from and R.ID_to = ? and R.EtatReq = 1)";
+        Cursor cursor = database.rawQuery(requete, param);
+        int IdAmi;
+        AmisActivity ami;
+        int i = 0;
+        if (cursor.moveToFirst()) {
+            do {
+                IdAmi = cursor.getInt(0);
+                UserTable pote = getUser(IdAmi);
+                String nom = pote.getNom();
+                String prenom = pote.getPrenom();
+                String nomPrenom = nom + " " + prenom;
+                ami = new AmisActivity(nomPrenom, IdAmi);
+                list.add(ami);
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+        this.close();
+        return list.toArray(new AmisActivity[list.size()]);
+    }
+
+    public FavorisActivity[] potoSearchFavoris(int IdUtilisateur){
+        ArrayList<FavorisActivity> list = new ArrayList<FavorisActivity>();
+        SQLiteDatabase database =  this.open();
+        String[] param = {Integer.toString(IdUtilisateur)};
+        String requete = "SELECT DISTINCT U.ID FROM user U, relations R WHERE (U.ID = ID_to and R.ID_from = ? and R.EtatReq = 2) or ( U.ID = R.ID_from and R.ID_to = ? and R.EtatReq = 1)";
+        Cursor cursor = database.rawQuery(requete, param);
+        int IdFav;
+        FavorisActivity fav;
+        int i = 0;
+        if (cursor.moveToFirst()) {
+            do {
+                IdFav = cursor.getInt(0);
+                UserTable pote = getUser(IdFav);
+                String nom = pote.getNom();
+                String prenom = pote.getPrenom();
+                String nomPrenom = nom + " " + prenom;
+                fav = new FavorisActivity(nomPrenom, IdFav);
+                list.add(fav);
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+        this.close();
+        return list.toArray(new FavorisActivity[list.size()]);
+    }
+
+    public String[] caracteristique(int IdAmi){
+        ArrayList<String> list = new ArrayList<String>();
+        UserTable poto = getUser(IdAmi);
+        list.add(poto.getPrenom());
+        if (!poto.getCacherNom()) {
+            list.add(poto.getNom());
+        }
+        list.add(poto.getGenre());
+        list.add(poto.getAge());
+        list.add(poto.getCheveux());
+        list.add(poto.getYeux());
+        if (!poto.getCacherAdresse()) {
+            list.add(poto.getRue());
+        }
+        if (!poto.getCacherAdresse()) {
+            list.add(String.valueOf(poto.getCodePost()));
+        }
+        if (!poto.getCacherAdresse()) {
+            list.add(poto.getLocalite());
+        }
+        list.add(poto.getPays());
+        if (!poto.getCacherTelephone()) {
+            list.add(poto.getTelephone());
+        }
+        list.add(poto.getInclinaison());
+        if (!poto.getCacherFacebook()) {
+            list.add(poto.getFacebook());
+        }
+        list.add(poto.getLangue());
+        return list.toArray(new String[list.size()]);
+    }
 }
