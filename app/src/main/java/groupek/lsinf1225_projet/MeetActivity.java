@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidListener;
@@ -75,6 +76,20 @@ public class MeetActivity extends AppCompatActivity {
 
         final SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
 
+        DatabaseHelper db = new DatabaseHelper(MeetActivity.this);
+        //here came the loading of the profile pics------//TODO allow to uncomment this
+        /*
+        ImageView img1 = (ImageView)findViewById(R.id.imgRdv1);
+        ImageView img2 = (ImageView)findViewById(R.id.imgRdv2);
+        PhotoTable pic1 [] = db.getAllPhotos(this.idFrom);
+        PhotoTable pic2 [] = db.getAllPhotos(this.idTo);
+        img1.setImageBitmap(pic1[0].getImage());
+        img2.setImageBitmap(pic2[0].getImage());
+        */
+        //end of the profile pics here-------------------
+
+
+
         // Setup caldroid fragment
         caldroidFragment = new CaldroidFragment();
 
@@ -118,9 +133,8 @@ public class MeetActivity extends AppCompatActivity {
 
         //initialising the hashtable and the colors of the calendar
         daysUser = new Hashtable<>();
-        daysOther = new Hashtable<>();//TODO put this one back to work
+        daysOther = new Hashtable<>();
 
-        DatabaseHelper db = new DatabaseHelper(MeetActivity.this);
         Date userD[] = db.getDispo(this.idFrom, this.idTo);
         for (Date d : userD) {
             daysUser.put(d.getTime(), true);
