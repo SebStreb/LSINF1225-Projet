@@ -326,7 +326,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void updateUser(int id, String[] newValues){
         SQLiteDatabase db =  this.open();
-        String query = "REPLACE INTO user(Nom, Prenom, Genre, Age, Cheveux, Yeux, Rue, CodePost, Localite, Pays, Telephone, Inclinaison, Facebook, Langue, Cacher_nom bool, Cacher_adresse, Cacher_telephone, Cacher_facebook) VALUES("
+        String query = "REPLACE INTO user(Nom, Prenom, Genre, Age, Cheveux, Yeux, Rue, CodePost, Localite, Pays, Telephone, Inclinaison, Facebook, Langue, Cacher_nom, Cacher_adresse, Cacher_telephone, Cacher_facebook) VALUES("
                 + "'"+newValues[0]+"',"
                 + "'"+newValues[1]+"',"
                 + "'"+newValues[2]+"',"
@@ -463,7 +463,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ArrayList<String> list = new ArrayList<String>();
         SQLiteDatabase database =  this.open();
         String[] param = {Integer.toString(myId)};
-        String query = "SELECT DISTINCT U._id FROM user U, relations R WHERE (U.ID = ID_to and R.ID_from = ? and R.EtatReq = 1) or ( U.ID = R.ID_from and R.ID_to = ? and R.EtatReq = 1)";
+        String query = "SELECT DISTINCT U._id FROM user U, relations R WHERE (U._id = ID_to and R.ID_from = ? and R.EtatReq = 1) or ( U._id = R.ID_from and R.ID_to = ? and R.EtatReq = 1)";
         Cursor cursor = database.rawQuery(query, param);
         if (cursor.moveToFirst()) {
             do {
