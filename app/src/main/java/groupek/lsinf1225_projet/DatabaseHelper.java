@@ -319,7 +319,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return user;
     }
 
-    public void updateUser(UserTable user, String[] newValues){
+    public void updateUser(int id, String[] newValues){
         SQLiteDatabase db =  this.open();
         String query = "REPLACE INTO user(Nom, Prenom, Genre, Age, Cheveux, Yeux, Rue, CodePost, Localite, Pays, Telephone, Inclinaison, Facebook, Langue, Cacher_nom bool, Cacher_adresse, Cacher_telephone, Cacher_facebook) VALUES("
                 + "'"+newValues[0]+"',"
@@ -339,7 +339,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + "'"+newValues[14]+"',"
                 + "'"+newValues[15]+"',"
                 + "'"+newValues[16]+"',"
-                + "'"+newValues[17]+"') WHERE user.ID ="+Integer.toString(user.getId());
+                + "'"+newValues[17]+"') WHERE user.ID ="+Integer.toString(id);
         db.execSQL(query);
         db.close();
     }
@@ -362,6 +362,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor2.close();
         db.close();
         return id;
+    }
+
+    public PhotoTable[] getAllPhotos(int id){
+        List<PhotoTable> list = new ArrayList<>();
+        SQLiteDatabase db = this.open();
+        String[] cols = {"nom","image"}; // select nom, image from photos where photos.ID_user = id
+        String[] args = {Integer.toString(id)};
+        Cursor cursor = db.query("photos", cols, "photos.ID_user = ?", args, null, null, null);
+        if (cursor.moveToFirst()) {
+            do {
+                String nom = cursor.getString(0);
+                byte[] bmp = cursor.getBlob(1);
+                PhotoTable photos = new PhotoTable(id,nom,bmp);
+                list.add(photos);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return list.toArray(new PhotoTable[list.size()]);
     }
 
     /*    Rencontre    */
