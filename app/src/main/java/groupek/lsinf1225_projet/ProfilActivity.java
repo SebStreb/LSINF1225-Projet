@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListAdapter;
@@ -30,15 +31,19 @@ public class ProfilActivity extends AppCompatActivity {
     ExpandableListView expListView;
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
-    private String [] caracs = new String [21]; // tableau qui contient les données profils d'un user
+    private String [] caracs; // tableau qui contient les données profils d'un user
     private int id;
-    private DatabaseHelper dh = new DatabaseHelper(this);
+    DatabaseHelper dh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profil);
-
+        dh = new DatabaseHelper(this);
+        Bundle b = getIntent().getExtras();
+        this.id = b.getInt("id");
+        //this.id = 1;
+        Log.wtf("ca marche pas sa mere",Integer.toString(id));
         // get the listview
         expListView = (ExpandableListView) findViewById(R.id.expandableListView);
 
@@ -53,10 +58,6 @@ public class ProfilActivity extends AppCompatActivity {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
-                if (listDataHeader.get(groupPosition) == "Nom"){
-                    Dialog dial = new Dialog(ProfilActivity.this);
-
-                }
                 Toast.makeText(
                         getApplicationContext(),
                         listDataHeader.get(groupPosition)
@@ -69,7 +70,7 @@ public class ProfilActivity extends AppCompatActivity {
                 return false;
             }
         });
-
+        caracs = new String[21];
         fill(this.id); //remplis le tableau carac avec les valeurs deja presentes en bdd
 
         Button clickButton = (Button) findViewById(R.id.button);
@@ -81,13 +82,12 @@ public class ProfilActivity extends AppCompatActivity {
             }
         });
 
+
     }
 
     public void fill(int id){
+        Log.wtf("fill",Integer.toString(id));
         UserTable user = dh.getUser(this.id);
-        caracs[0] = Integer.toString(user.getId());
-        caracs[1] = user.getLogin();
-        caracs[2] = user.getPass();
         caracs[3] = user.getNom();
         caracs[4] = user.getPrenom();
         caracs[5] = user.getGenre();
@@ -106,7 +106,6 @@ public class ProfilActivity extends AppCompatActivity {
         caracs[18] = Boolean.toString(user.getCacherAdresse());
         caracs[19] = Boolean.toString(user.getCacherTelephone());
         caracs[20] = Boolean.toString(user.getCacherFacebook());
-
     }
 
     /*
