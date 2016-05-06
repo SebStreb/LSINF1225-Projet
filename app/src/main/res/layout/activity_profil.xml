@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
-            android:hint="Nom"
+            android:hint="@string/nom"
             android:ems="10"
             android:id="@+id/editTextNom"/>
 
@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
-            android:hint="Prenom"
+            android:hint="@string/prenom"
             android:ems="10"
             android:id="@+id/editTextPrenom" />
 
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:inputType="date"
             android:ems="10"
-            android:hint="Age"
+            android:hint="@string/age"
             android:id="@+id/editTextDate"/>
 
         <ExpandableListView
@@ -59,39 +59,39 @@
             android:layout_height="wrap_content"
             android:inputType="textPostalAddress"
             android:ems="10"
-            android:hint="adresse"
+            android:hint="@string/adresse"
             android:id="@+id/editText2" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/editTextCP"
-            android:hint="CP" />
+            android:hint="@string/cp" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/editText"
-            android:hint="localité" />
+            android:hint="@string/localit" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="phone"
             android:ems="10"
-            android:hint="Phone"
+            android:hint="@string/phone"
             android:id="@+id/editTextPhone" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/editTextFacebook"
-            android:hint="Facebook"
+            android:hint="@string/facebook"
             android:layout_above="@+id/button" />
 
 
         <Button
-            android:text="Enregistrer et quitter"
+            android:text="@string/enregistrer_et_quitter"
             android:id="@+id/button"
             android:layout_width="300dp"
             android:layout_height="50dp"
@@ -104,7 +104,7 @@
             android:inputType="textEmailAddress"
             android:ems="10"
             android:id="@+id/editTextLogin"
-            android:hint="Login"
+            android:hint="@string/login"
             android:visibility="gone"/>
 
         <EditText
@@ -112,7 +112,7 @@
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:ems="10"
-            android:hint="Password"
+            android:hint="@string/password"
             android:id="@+id/editText3"
             android:visibility="gone"/>
 
