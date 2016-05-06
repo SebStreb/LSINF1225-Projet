@@ -46,7 +46,7 @@ public class BrowserActivity extends AppCompatActivity {
             this.ID = b.getInt("id");
         }
         else {
-            this.ID = 0;
+            this.ID = 1;
         }
         if(getIntent().hasExtra("index")) {
             this.index = b.getInt("index");
@@ -63,27 +63,13 @@ public class BrowserActivity extends AppCompatActivity {
 
         DatabaseHelper db = new DatabaseHelper(BrowserActivity.this);
 
-
         this.users = getOtherUsers(db);
-        UserTable user = users[index];
+        final UserTable user = users[index];
 
-
-
-        // DatabaseHelper myDB = new DatabaseHelper(this);
-
-        //SQLiteDatabase db = myDB.open();
-
-        /*
-        db.execSQL("UPDATE user SET Genre='Female', Age='25 ans', Cheveux='Cheveux Noirs', Yeux='Yeux bleus'" +
-                ", Localite='Ottignies', Inclinaison='Hétéro' WHERE ID='4'");
-        */
-
-
-        // setUser(myDB);
-
+        PhotoTable[] userPhotos = db.getAllPhotos(user.getId());
 
         ImageView profilePicture = (ImageView)findViewById(R.id.profile_picture);
-        // profilePicture.setImageBitmap(bmpProfilePicture);
+        // profilePicture.setImageBitmap(userPhotos[0]);
 
         TextView nom_text = (TextView)findViewById(R.id.nom);
         nom_text.setText(user.getPrenom() + " " + user.getNom());
@@ -110,14 +96,15 @@ public class BrowserActivity extends AppCompatActivity {
         accept_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // ajouter l'utilisateur à la liste d'amis
-                /*
-                addUserToFriendList(myDB, users.get(0), this.ID);
+
+                DatabaseHelper db = new DatabaseHelper(BrowserActivity.this);
+                sendFriendRequest(db, ID, user.getId());
 
                 Intent myIntent = new Intent(BrowserActivity.this, BrowserActivity.class);
-
-                myIntent.putExtra("index", setNextIndex(index, users));
-                */
-                Intent myIntent = new Intent(BrowserActivity.this, BrowserActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("id", ID);
+                bundle.putInt("index", 0);
+                bundle.putInt("mode", mode);
 
                 finish();
                 startActivity(myIntent);
@@ -128,8 +115,15 @@ public class BrowserActivity extends AppCompatActivity {
         decline_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // passer l'utilisateur et ne plus l'afficher pour la suite
-                // removeUserFromUserList(myDB, users.get(0), this.ID);
+
+                DatabaseHelper db = new DatabaseHelper(BrowserActivity.this);
+                removeUserFromAnyList(db, ID, user.getId());
                 Intent myIntent = new Intent(BrowserActivity.this, BrowserActivity.class);
+
+                Bundle bundle = new Bundle();
+                bundle.putInt("id", ID);
+                bundle.putInt("index", 0);
+                bundle.putInt("mode", mode);
 
                 finish();
                 startActivity(myIntent);
@@ -169,10 +163,31 @@ public class BrowserActivity extends AppCompatActivity {
     public UserTable[] getOtherUsers(DatabaseHelper db) {
         ArrayList<UserTable> users = new ArrayList<UserTable>();
 
-        if(this.mode == 1) {
+        if(BrowserActivity.this.getMode() == 1) {
+
+            ArrayList<Integer> rel_ids = new ArrayList<Integer>();
+
+            SQLiteDatabase myDB = db.open();
+            Cursor cursor = myDB.rawQuery("SELECT ID_to FROM relations WHERE ID_from = " + BrowserActivity.this.getID(), null);
+            if(cursor.moveToFirst()) {
+                for(int i = 0 ; i < cursor.getCount() ; i++) {
+                    rel_ids.add(cursor.getInt(0));
+                    cursor.moveToNext();
+                }
+            }
+
             int i = 1;
             while(db.getUser(i) != null) {
-                if(i != this.ID) {
+                boolean condition = true;
+                if(db.getUser(i).getId() == BrowserActivity.this.getID()) {
+                    condition = false;
+                }
+                for(int j = 0 ; j < rel_ids.size() ; j++) {
+                    if(db.getUser(i).getId() == rel_ids.get(j)) {
+                        condition = false;
+                    }
+                }
+                if(condition) {
                     users.add(db.getUser(i));
                 }
                 i++;
@@ -184,6 +199,7 @@ public class BrowserActivity extends AppCompatActivity {
             }
             return tab;
         }
+        // A MODIFIER
         else if(this.mode == 2) {
             int i = 1;
             while(db.getUser(i) != null) {
@@ -203,58 +219,6 @@ public class BrowserActivity extends AppCompatActivity {
 
 
         return null;
-    }
-
-    /**
-     * Retourne la liste des autres utilisateurs
-     * @param db la bdd utilisée
-     * @return un tableau avec les id de tous les autres utilisateurs présents dans la bdd
-     */
-    public int[] getUsers(DatabaseHelper db) {
-        String[] id = new String[1];
-        id[0] = Integer.toString(this.ID);
-        String sql = "SELECT ID FROM user WHERE ID <> ?";
-        SQLiteDatabase myDB = db.open();
-        Cursor cursor = myDB.rawQuery(sql, id);
-        Log.i("msg", cursor.getCount() + " getUsers");
-
-        int[] tab = new int[cursor.getCount()];
-
-        cursor.moveToFirst();
-        for(int i = 0 ; i < tab.length ; i++) {
-            tab[i] = cursor.getInt(0);
-            cursor.moveToNext();
-        }
-        cursor.close();
-
-        // mode browse people
-        if(mode == 1) {
-
-        }
-        // mode browse requetes
-        else if(mode == 2){
-            String[] params = new String[2];
-            params[0] = Integer.toString(this.ID);
-            params[1] = "0";
-            String sql2 = "SELECT ID_from FROM relations WHERE ID_to = ? AND EtatReq = ?";
-            Cursor cursor2 = myDB.rawQuery(sql2, params);
-            cursor2.moveToFirst();
-
-            int[] newTab = new int[cursor2.getCount()];
-
-            for(int i = 0 ; i < newTab.length ; i++) {
-                newTab[i] = cursor.getInt(0);
-                cursor2.moveToNext();
-            }
-            cursor2.close();
-
-            return newTab;
-        }
-        else {
-
-        }
-
-        return tab;
     }
 
     /**
@@ -323,79 +287,13 @@ public class BrowserActivity extends AppCompatActivity {
     }
 
     /**
-     * Retourne toutes les photos d'un utilisateur donné
-     * @param db la bdd utilisée
-     * @param user_id l'id de l'utilisateur donné
-     * @return un tableau de byte ou chaque entrée contient un tableau de byte avec une des photos
-     */
-    public byte[][] getPhotosFromDB(DatabaseHelper db, int user_id) {
-        String[] user = new String[1];
-        user[0] = Integer.toString(user_id);
-        SQLiteDatabase myDB = db.open();
-        Cursor c = myDB.rawQuery("SELECT Photo FROM photos WHERE ID_user = ?", user);
-        c.moveToFirst();
-        byte[][] photos = new byte[1][c.getCount()];
-
-        for(int i = 0 ; i < c.getCount() ; i++) {
-            photos[i] = c.getBlob(i);
-        }
-        c.close();
-
-        return photos;
-    }
-
-    public String[] getUserInfosFromDB(DatabaseHelper db, int user_id) {
-        String[] tab = new String[8];
-        String[] user = new String[1];
-        user[0] = Integer.toString(user_id);
-
-        SQLiteDatabase myDB = db.open();
-        Cursor c = myDB.rawQuery("SELECT Nom, Prenom, Genre, Age, Cheveux, Yeux, Localite," +
-                " Inclinaison FROM user WHERE ID = ?", user);
-        c.moveToFirst();
-
-        Log.i("msg", c.getCount()+" getUsersInfosFromDB");
-
-        for(int i = 0 ; i < c.getCount() ; i++) {
-            Log.i("truc", c.getString(i)+"trucbidule");
-            tab[i] = Integer.toString(c.getInt(i));
-        }
-        c.close();
-
-        return tab;
-    }
-
-    public void setUser(DatabaseHelper db) {
-        int[] users_id = getUsers(db);
-        final ArrayList<Integer> users = sortUsers(db, users_id);
-
-        other_user_id = 1;//users.get(index);
-
-        String[] user_infos = getUserInfosFromDB(db, other_user_id);
-
-        nom = user_infos[1] + " " + user_infos[0];
-        genre = user_infos[2];
-        age = user_infos[3];
-        couleur_cheveux = user_infos[4];
-        couleur_yeux = user_infos[5];
-        localite = user_infos[6];
-        inclinaison = user_infos[7];
-
-        byte[] byteProfilePicture = getPhotosFromDB(db, other_user_id)[0];
-
-        bmpProfilePicture = BitmapFactory.decodeByteArray(byteProfilePicture, 0, byteProfilePicture.length);
-    }
-
-
-
-    /**
      * Insert une nouvelle entrée dans la table relations de la bdd signifiant que l'utilisateur actif
      * désire devenir ami avec l'utilisateur visé (demande d'ami envoyée)
      * @param db la bdd utilisée
      * @param user_id_1 id de l'utilisateur actif
      * @param user_id_2 id de l'utilisateur visé
      */
-    public void addUserToFriendList(DatabaseHelper db, int user_id_1, int user_id_2) {
+    public void sendFriendRequest(DatabaseHelper db, int user_id_1, int user_id_2) {
         String[] params = new String[2];
         params[0] = Integer.toString(user_id_1);
         params[1] = Integer.toString(user_id_2);
@@ -407,14 +305,14 @@ public class BrowserActivity extends AppCompatActivity {
     }
 
 
-    public void removeUserFromUserList(DatabaseHelper db, int user_id_1, int user_id_2) {
+    public void removeUserFromAnyList(DatabaseHelper db, int user_id_1, int user_id_2) {
         String[] params = new String[2];
         String[] params2 = new String[2];
         params[0] = params2[1] = Integer.toString(user_id_1);
-        params[1] = params[0] = Integer.toString(user_id_2);
+        params[1] = params2[0] = Integer.toString(user_id_2);
 
-        String sql1 = "UPDATE relations SET EtatReq = 3 WHERE ID_from = ? AND ID_to = ?";
-        String sql2 = "UPDATE relations SET EtatReq = 3 WHERE ID_from = ? AND ID_to = ?";
+        String sql1 = "INSERT INTO relations VALUES (?, ?, 3)";
+        String sql2 = "INSERT INTO relations VALUES (?, ?, 3)";
         SQLiteDatabase myDB = db.open();
 
         myDB.execSQL(sql1, params);
@@ -441,6 +339,11 @@ public class BrowserActivity extends AppCompatActivity {
 
         return previousIndex;
     }
+
+    public int getID() { return this.ID; }
+    public int getOther_user_id() { return this.other_user_id; }
+    public int getIndex() { return this.index; }
+    public int getMode() { return this.mode; }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
