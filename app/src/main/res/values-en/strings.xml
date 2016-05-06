@@ -18,7 +18,7 @@
     <string name="error_invalid_email">The email adress is invalid</string>
     <string name="error_invalid_password">The password is too short</string>
     <string name="facebook">Facebook</string>
-    <string name="favoris"></string>
+    <string name="favoris">Best Friends</string>
     <string name="friend">Friends</string>
     <string name="localit">Place</string>
     <string name="login">Login</string>

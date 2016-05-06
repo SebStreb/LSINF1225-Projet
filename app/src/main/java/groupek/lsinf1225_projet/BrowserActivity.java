@@ -313,14 +313,28 @@ public class BrowserActivity extends AppCompatActivity {
      * @param user_id_2 id de l'utilisateur visé
      */
     public void sendFriendRequest(DatabaseHelper db, int user_id_1, int user_id_2) {
+        SQLiteDatabase myDB = db.open();
+
         String[] params = new String[2];
         params[0] = Integer.toString(user_id_1);
         params[1] = Integer.toString(user_id_2);
 
-        String sql = "INSERT INTO relations VALUES (?, ?, 0)";
-        SQLiteDatabase myDB = db.open();
-
-        myDB.execSQL(sql, params);
+        String[] params2 = new String[2];
+        params2[0] = Integer.toString(user_id_2);
+        params2[1] = Integer.toString(user_id_1);
+        String sql1 = "SELECT EtatReq FROM relations WHERE ID_from = ? AND ID_to = ?";
+        Cursor cursor = myDB.rawQuery(sql1, params2);
+        if (cursor.moveToFirst()) {
+            String sql2 = "INSERT INTO relations VALUES (?, ?, 1)";
+            myDB.execSQL(sql2, params);
+            sql2 = "UPDATE relations SET EtatReq = 1 WHERE ID_from = ? AND ID_to = ?";
+            myDB.execSQL(sql2, params2);
+        } else {
+            String sql2 = "INSERT INTO relations VALUES (?, ?, 0)";
+            myDB.execSQL(sql2, params);
+        }
+        cursor.close();
+        myDB.close();
     }
 
 
