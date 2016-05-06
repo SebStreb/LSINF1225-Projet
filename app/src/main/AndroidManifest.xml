@@ -24,7 +24,7 @@
         <activity android:name=".ContactActivity" />
         <activity android:name=".AmisActivity" />
         <activity android:name=".FavorisActivity" />
-        <activity android:name=".ProfilAmiFavActivity" />
+        <activity android:name=".ProfilAmiFavActivity"/>
         <activity android:name=".MeetActivity" />
         <activity android:name=".BrowserActivity" />
         <activity android:name=".MessagerieActivity" />
