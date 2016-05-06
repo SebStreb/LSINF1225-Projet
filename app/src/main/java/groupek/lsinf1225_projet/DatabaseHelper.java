@@ -117,7 +117,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT OR IGNORE INTO user(Login, Pass, Nom, Prenom) VALUES " +
                 "('antoinepop@yolo.be', 'Yolo1234', 'Popeler', 'Antoine')");
         db.execSQL("INSERT OR IGNORE INTO user(Login, Pass, Nom, Prenom) VALUES " +
-                "('damienvan@yolo.be', 'Yolo1234', 'Vaneberk', 'Damien')");
+                "('damienvan@yolo.be', 'Yolo1234', 'Vaneberck', 'Damien')");
         db.execSQL("INSERT OR IGNORE INTO user(Login, Pass, Nom, Prenom) VALUES " +
                 "('angmerk@yolo.be', 'Yolo1234', 'Merkel', 'Angela')");
         db.execSQL("INSERT OR IGNORE INTO user(Login, Pass, Nom, Prenom) VALUES " +
