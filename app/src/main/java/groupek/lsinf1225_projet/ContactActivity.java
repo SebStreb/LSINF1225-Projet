@@ -9,15 +9,15 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 public class ContactActivity extends AppCompatActivity {
-    public String[] contact = {
-            getString(R.string.friends),
-            getString(R.string.best)
-    };
+    public String[] contact = new String[2];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact);
+
+        contact[0] = getString(R.string.friend);
+        contact[1] = getString(R.string.best);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, contact);
         ListView list = (ListView) findViewById(R.id.listView);
