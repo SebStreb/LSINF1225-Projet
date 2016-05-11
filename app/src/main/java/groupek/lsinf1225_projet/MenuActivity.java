@@ -23,6 +23,7 @@ public class MenuActivity extends AppCompatActivity {
         String[] menu = {
                 res.getString(R.string.profil),
                 res.getString(R.string.browser),
+                getString(R.string.asking),
                 res.getString(R.string.contacts),
                 res.getString(R.string.message)
         };
@@ -51,12 +52,18 @@ public class MenuActivity extends AppCompatActivity {
                         newActivity.putExtras(b);
                         startActivity(newActivity);
                         break;
-                    case 2:  newActivity = new Intent(MenuActivity.this, ContactActivity.class);
+                    case 2:  newActivity = new Intent(MenuActivity.this, BrowserActivity.class);
+                        b.putInt("id", ID);
+                        b.putInt("mode", 2);
+                        newActivity.putExtras(b);
+                        startActivity(newActivity);
+                        break;
+                    case 3: newActivity = new Intent(MenuActivity.this, ContactActivity.class);
                         b.putInt("id", ID);
                         newActivity.putExtras(b);
                         startActivity(newActivity);
                         break;
-                    case 3:  newActivity = new Intent(MenuActivity.this, MessagerieActivity.class);
+                    case 4:  newActivity = new Intent(MenuActivity.this, MessagerieActivity.class);
                         b.putInt("id", ID);
                         newActivity.putExtras(b);
                         startActivity(newActivity);

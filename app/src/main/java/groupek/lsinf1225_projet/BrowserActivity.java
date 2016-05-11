@@ -39,8 +39,6 @@ public class BrowserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browser);
 
-        setTitle("Menu");
-
         Bundle b = getIntent().getExtras();
         if(getIntent().hasExtra("id")) {
             this.ID = b.getInt("id");
@@ -87,7 +85,7 @@ public class BrowserActivity extends AppCompatActivity {
 
         TextView localite_text = (TextView)findViewById(R.id.localite);
         if(user.getCacherAdresse()) {
-            localite_text.setText("adresse cachée");
+            localite_text.setText(R.string.hiddenAdrr);
         }
         else {
             localite_text.setText(user.getLocalite());

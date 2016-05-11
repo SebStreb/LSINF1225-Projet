@@ -200,17 +200,37 @@ public class ProfilActivity extends AppCompatActivity {
 
         caracs[2] = user.getGenre();
 
-
+        EditText age = (EditText) findViewById(R.id.editTextDate);
         caracs[3] = user.getAge();
+        age.setText(caracs[3]);
+
         caracs[4] = user.getCheveux();
         caracs[5] = user.getYeux();
+
+        EditText rue = (EditText) findViewById(R.id.editText2);
         caracs[6] = user.getRue();
+        rue.setText(caracs[6]);
+
+        EditText codePost = (EditText) findViewById(R.id.editTextCP);
         caracs[7] = Integer.toString(user.getCodePost());
+        codePost.setText(caracs[7]);
+
+        EditText localite = (EditText) findViewById(R.id.editText);
         caracs[8] = user.getLocalite();
+        localite.setText(caracs[8]);
+
         caracs[9] = user.getPays();
+
+        EditText phone = (EditText) findViewById(R.id.editTextPhone) ;
         caracs[10] = user.getTelephone();
+        phone.setText(caracs[10]);
+
         caracs[11] = user.getInclinaison();
+
+        EditText face = (EditText) findViewById(R.id.editTextFacebook);
         caracs[12] = user.getFacebook();
+        face.setText(caracs[12]);
+
         caracs[13] = user.getLangue();
         caracs[14] = Boolean.toString(user.getCacherNom());
         caracs[15] = Boolean.toString(user.getCacherAdresse());
@@ -227,62 +247,62 @@ public class ProfilActivity extends AppCompatActivity {
         listDataChild = new HashMap<String, List<String>>();
 
         // sections
-        listDataHeader.add("Genre");
-        listDataHeader.add("Cheveux");
-        listDataHeader.add("Yeux");
-        listDataHeader.add("Pays");
-        listDataHeader.add("Langue");
-        listDataHeader.add("Cacher nom ?");
-        listDataHeader.add("Cacher adresse ?");
-        listDataHeader.add("Cacher téléphone ?");
-        listDataHeader.add("Cacher Facebook ?");
+        listDataHeader.add(getString(R.string.gender));
+        listDataHeader.add(getString(R.string.hair));
+        listDataHeader.add(getString(R.string.eyes));
+        listDataHeader.add(getString(R.string.country));
+        listDataHeader.add(getString(R.string.language));
+        listDataHeader.add(getString(R.string.hidename));
+        listDataHeader.add(getString(R.string.hidepost));
+        listDataHeader.add(getString(R.string.hidephone));
+        listDataHeader.add(getString(R.string.hideface));
 
 
         //sous-sections section 3
         List<String> genre = new ArrayList<String>();
-        genre.add("Homme");
-        genre.add("Femme");
+        genre.add(getString(R.string.men));
+        genre.add(getString(R.string.women));
 
         List<String> cheveux = new ArrayList<String>();
-        cheveux.add("Blonds");
-        cheveux.add("Bruns");
-        cheveux.add("Noirs");
-        cheveux.add("Roux");
-        cheveux.add("Autre (teinture)");
+        cheveux.add(getString(R.string.blond));
+        cheveux.add(getString(R.string.brown));
+        cheveux.add(getString(R.string.black));
+        cheveux.add(getString(R.string.redhead));
+        cheveux.add(getString(R.string.other));
 
         List<String> yeux = new ArrayList<String>();
-        yeux.add("Bleus");
-        yeux.add("Bruns");
-        yeux.add("Verts");
-        yeux.add("Gris");
-        yeux.add("Autre");
+        yeux.add(getString(R.string.blue));
+        yeux.add(getString(R.string.brown));
+        yeux.add(getString(R.string.green));
+        yeux.add(getString(R.string.grey));
+        yeux.add(getString(R.string.other));
 
         List<String> pays = new ArrayList<String>();
-        pays.add("Belgique");
-        pays.add("France");
-        pays.add("Luxembourg");
-        pays.add("Angleterre");
+        pays.add(getString(R.string.belgium));
+        pays.add(getString(R.string.france));
+        pays.add(getString(R.string.luxo));
+        pays.add(getString(R.string.england));
 
         List<String> langue = new ArrayList<String>();
-        langue.add("Français");
-        langue.add("Anglais");
-        langue.add("Néerlandais");
+        langue.add(getString(R.string.french));
+        langue.add(getString(R.string.english));
+        langue.add(getString(R.string.dutch));
 
         List<String> cacherNom = new ArrayList<String>();
-        cacherNom.add("Oui");
-        cacherNom.add("Non");
+        cacherNom.add(getString(R.string.yes));
+        cacherNom.add(getString(R.string.no));
 
         List<String> cacherAdresse = new ArrayList<String>();
-        cacherAdresse.add("Oui");
-        cacherAdresse.add("Non");
+        cacherAdresse.add(getString(R.string.yes));
+        cacherAdresse.add(getString(R.string.no));
 
         List<String> cacherTelephone = new ArrayList<String>();
-        cacherTelephone.add("Oui");
-        cacherTelephone.add("Non");
+        cacherTelephone.add(getString(R.string.yes));
+        cacherTelephone.add(getString(R.string.no));
 
         List<String> cacherFacebook = new ArrayList<String>();
-        cacherFacebook.add("Oui");
-        cacherFacebook.add("Non");
+        cacherFacebook.add(getString(R.string.yes));
+        cacherFacebook.add(getString(R.string.no));
 
 
         listDataChild.put(listDataHeader.get(0), genre);

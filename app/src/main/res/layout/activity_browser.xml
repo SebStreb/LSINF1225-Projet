@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/profile_picture"
-            android:src="@drawable/antoine_popeler"
+            android:src="@drawable/profil"
             android:layout_centerHorizontal="true"
             android:layout_alignParentStart="false"
             android:layout_alignParentEnd="false"

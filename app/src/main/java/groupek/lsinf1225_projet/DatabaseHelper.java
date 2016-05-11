@@ -150,7 +150,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS photos");
         db.execSQL("DROP TABLE IF EXISTS relations");
         db.execSQL("DROP TABLE IF EXISTS dispo");
-        db.execSQL("DROP TABLE IF EXISTS rencontre");
     }
 
     public SQLiteDatabase open(){

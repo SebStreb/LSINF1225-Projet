@@ -20,7 +20,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/lama"
+            android:src="@drawable/profil"
             android:id="@+id/imgRdv1"
             android:contentDescription="ProfilePic1" />
         <ImageView
@@ -39,7 +39,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/lama2"
+            android:src="@drawable/profil"
             android:id="@+id/imgRdv2"
             android:contentDescription="ProfilePic2" />
 

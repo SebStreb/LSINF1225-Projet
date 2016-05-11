@@ -10,8 +10,8 @@ import android.widget.ListView;
 
 public class ContactActivity extends AppCompatActivity {
     public String[] contact = {
-            "Amis",
-            "Favoris"
+            getString(R.string.friends),
+            getString(R.string.best)
     };
 
     @Override

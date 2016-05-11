@@ -21,7 +21,6 @@ public class ChatActivity extends AppCompatActivity {
 
     private EditText messageET;
     private ListView messagesContainer;
-    private Button sendBtn;
     private ChatAdapter adapter;
     private UserTable me;
     private UserTable other;
@@ -37,7 +36,7 @@ public class ChatActivity extends AppCompatActivity {
     private void initControls() {
         messagesContainer = (ListView) findViewById(R.id.messagesContainer);
         messageET = (EditText) findViewById(R.id.messageEdit);
-        sendBtn = (Button) findViewById(R.id.chatSendButton);
+        Button sendBtn = (Button) findViewById(R.id.chatSendButton);
 
         TextView meLabel = (TextView) findViewById(R.id.meLbl);
         TextView companionLabel = (TextView) findViewById(R.id.friendLabel);
