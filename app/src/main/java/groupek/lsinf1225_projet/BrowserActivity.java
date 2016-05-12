@@ -67,6 +67,8 @@ public class BrowserActivity extends AppCompatActivity {
 
         UserTable[] userTables = getOtherUsers(db);
 
+        this.users = getOtherUsers(db);
+
         if(userTables.length == 0) {
 
             Toast.makeText(BrowserActivity.this, "Aucun utilisateur restant!", Toast.LENGTH_LONG).show();

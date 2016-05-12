@@ -44,7 +44,7 @@ public class ProfilAmiFavActivity extends AppCompatActivity {
             public void onClick(View arg0) {
                 Intent intent = new Intent(ProfilAmiFavActivity.this, MeetActivity.class);
                 Bundle b2 = new Bundle();
-                b2.putInt("thisID", IdAmi);
+                b2.putInt("hisID", IdAmi);
                 b2.putInt("myID", IdUser);
                 intent.putExtras(b2);
                 startActivity(intent);

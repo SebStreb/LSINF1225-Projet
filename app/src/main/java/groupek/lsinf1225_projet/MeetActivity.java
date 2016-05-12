@@ -131,6 +131,8 @@ public class MeetActivity extends AppCompatActivity {
         this.idFrom = b.getInt("myID");
         this.idTo = b.getInt("hisID");
 
+        Log.wtf("Ids recus: ", "FROM: "+this.idFrom+", TO: "+this.idTo);
+
         //initialising the hashtable and the colors of the calendar
         daysUser = new Hashtable<>();
         daysOther = new Hashtable<>();

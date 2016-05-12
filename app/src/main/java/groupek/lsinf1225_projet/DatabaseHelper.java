@@ -137,6 +137,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT OR IGNORE INTO relations VALUES (5,1,1)");
         db.execSQL("INSERT OR IGNORE INTO relations VALUES (1,5,1)");
         db.execSQL("INSERT OR IGNORE INTO relations VALUES (5,4,2)");
+        db.execSQL("INSERT OR IGNORE INTO relations VALUES (1,2,1)");
+        db.execSQL("INSERT OR IGNORE INTO relations VALUES (2,1,1)");
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion ){ //en cas de modification majeure dans la bdd, supprime tout et reconstruit tout en incrementant DB_VERSION (SQLite oblige -_-)
