@@ -1,11 +1,13 @@
 package groupek.lsinf1225_projet;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -14,6 +16,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,6 +36,7 @@ public class BrowserActivity extends AppCompatActivity {
     private Bitmap bmpProfilePicture;
     private int mode;
     private UserTable[] users;
+    private UserTable user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,125 +65,140 @@ public class BrowserActivity extends AppCompatActivity {
 
         DatabaseHelper db = new DatabaseHelper(BrowserActivity.this);
 
-        this.users = getOtherUsers(db);
-        final UserTable user = users[index];
+        UserTable[] userTables = getOtherUsers(db);
 
-        // PhotoTable[] userPhotos = db.getAllPhotos(user.getId());
+        if(userTables.length == 0) {
 
-        ImageView profilePicture = (ImageView)findViewById(R.id.profile_picture);
-        // profilePicture.setImageBitmap(userPhotos[0]);
+            Toast.makeText(BrowserActivity.this, "Aucun utilisateur restant!", Toast.LENGTH_LONG).show();
+            
+            Intent myIntent = new Intent(BrowserActivity.this, MenuActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putInt("id", this.getID());
+            myIntent.putExtras(bundle);
 
-        TextView nom_text = (TextView)findViewById(R.id.nom);
-        if(user.getCacherNom()) {
-            nom_text.setText(user.getPrenom());
+            finish();
+            startActivity(myIntent);
         }
+
         else {
-            nom_text.setText(user.getPrenom() + " " + user.getNom());
+            this.users = userTables;
+            this.user = users[index];
+            // PhotoTable[] userPhotos = db.getAllPhotos(user.getId());
+
+            ImageView profilePicture = (ImageView) findViewById(R.id.profile_picture);
+            // profilePicture.setImageBitmap(userPhotos[0]);
+
+            TextView nom_text = (TextView) findViewById(R.id.nom);
+            if (user.getCacherNom()) {
+                nom_text.setText(user.getPrenom());
+            } else {
+                nom_text.setText(user.getPrenom() + " " + user.getNom());
+            }
+
+            TextView genre_text = (TextView) findViewById(R.id.genre);
+            genre_text.setText(user.getGenre());
+
+            TextView couleur_cheveux_text = (TextView) findViewById(R.id.couleur_cheveux);
+            couleur_cheveux_text.setText(user.getCheveux());
+
+            TextView localite_text = (TextView) findViewById(R.id.localite);
+            if (user.getCacherAdresse()) {
+                localite_text.setText(R.string.hiddenAdrr);
+            } else {
+                localite_text.setText(user.getLocalite());
+            }
+
+            TextView age_text = (TextView) findViewById(R.id.age);
+            age_text.setText(user.getAge());
+
+            TextView couleur_yeux_text = (TextView) findViewById(R.id.couleur_yeux);
+            couleur_yeux_text.setText(user.getYeux());
+
+            TextView inclinaison_text = (TextView) findViewById(R.id.inclinaison);
+            inclinaison_text.setText(user.getInclinaison());
+
+            ImageButton accept_button = (ImageButton) findViewById(R.id.accept_button);
+            accept_button.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    // ajouter l'utilisateur à la liste d'amis
+
+                    DatabaseHelper db = new DatabaseHelper(BrowserActivity.this);
+                    sendFriendRequest(db, ID, user.getId());
+
+                    Intent myIntent = new Intent(BrowserActivity.this, BrowserActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("id", ID);
+                    bundle.putInt("index", 0);
+                    bundle.putInt("mode", mode);
+
+                    finish();
+                    startActivity(myIntent);
+                }
+            });
+
+            ImageButton decline_button = (ImageButton) findViewById(R.id.decline_button);
+            decline_button.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    // passer l'utilisateur et ne plus l'afficher pour la suite
+
+                    DatabaseHelper db = new DatabaseHelper(BrowserActivity.this);
+                    removeUserFromAnyList(db, ID, user.getId());
+                    Intent myIntent = new Intent(BrowserActivity.this, BrowserActivity.class);
+
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("id", ID);
+                    bundle.putInt("index", 0);
+                    bundle.putInt("mode", mode);
+
+                    finish();
+                    startActivity(myIntent);
+                }
+            });
+
+            ImageButton previous_button = (ImageButton) findViewById(R.id.previous_button);
+            previous_button.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    // retourner à la personne précédente
+
+                    Intent myIntent = new Intent(BrowserActivity.this, BrowserActivity.class);
+
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("id", ID);
+                    bundle.putInt("index", setPreviousIndex(index, users.length));
+                    bundle.putInt("mode", mode);
+
+                    myIntent.putExtras(bundle);
+
+                    finish();
+                    startActivity(myIntent);
+                }
+            });
+
+            ImageButton next_button = (ImageButton) findViewById(R.id.next_button);
+            next_button.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    // passer la personne mais garder la possibilité de l'afficher par la suite
+
+                    Intent myIntent = new Intent(BrowserActivity.this, BrowserActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("id", ID);
+                    bundle.putInt("index", setNextIndex(index, users.length));
+                    bundle.putInt("mode", mode);
+
+                    myIntent.putExtras(bundle);
+
+                    finish();
+                    startActivity(myIntent);
+                }
+            });
         }
-
-        TextView genre_text = (TextView)findViewById(R.id.genre);
-        genre_text.setText(user.getGenre());
-
-        TextView couleur_cheveux_text = (TextView)findViewById(R.id.couleur_cheveux);
-        couleur_cheveux_text.setText(user.getCheveux());
-
-        TextView localite_text = (TextView)findViewById(R.id.localite);
-        if(user.getCacherAdresse()) {
-            localite_text.setText(R.string.hiddenAdrr);
-        }
-        else {
-            localite_text.setText(user.getLocalite());
-        }
-
-        TextView age_text = (TextView)findViewById(R.id.age);
-        age_text.setText(user.getAge());
-
-        TextView couleur_yeux_text = (TextView)findViewById(R.id.couleur_yeux);
-        couleur_yeux_text.setText(user.getYeux());
-
-        TextView inclinaison_text = (TextView)findViewById(R.id.inclinaison);
-        inclinaison_text.setText(user.getInclinaison());
-
-        ImageButton accept_button = (ImageButton)findViewById(R.id.accept_button);
-        accept_button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // ajouter l'utilisateur à la liste d'amis
-
-                DatabaseHelper db = new DatabaseHelper(BrowserActivity.this);
-                sendFriendRequest(db, ID, user.getId());
-
-                Intent myIntent = new Intent(BrowserActivity.this, BrowserActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putInt("id", ID);
-                bundle.putInt("index", 0);
-                bundle.putInt("mode", mode);
-
-                finish();
-                startActivity(myIntent);
-            }
-        });
-
-        ImageButton decline_button = (ImageButton)findViewById(R.id.decline_button);
-        decline_button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // passer l'utilisateur et ne plus l'afficher pour la suite
-
-                DatabaseHelper db = new DatabaseHelper(BrowserActivity.this);
-                removeUserFromAnyList(db, ID, user.getId());
-                Intent myIntent = new Intent(BrowserActivity.this, BrowserActivity.class);
-
-                Bundle bundle = new Bundle();
-                bundle.putInt("id", ID);
-                bundle.putInt("index", 0);
-                bundle.putInt("mode", mode);
-
-                finish();
-                startActivity(myIntent);
-            }
-        });
-
-        ImageButton previous_button = (ImageButton)findViewById(R.id.previous_button);
-        previous_button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // retourner à la personne précédente
-
-                Intent myIntent = new Intent(BrowserActivity.this, BrowserActivity.class);
-
-                Bundle bundle = new Bundle();
-                bundle.putInt("id", ID);
-                bundle.putInt("index", setPreviousIndex(index, users.length));
-                bundle.putInt("mode", mode);
-
-                myIntent.putExtras(bundle);
-
-                finish();
-                startActivity(myIntent);
-            }
-        });
-
-        ImageButton next_button = (ImageButton)findViewById(R.id.next_button);
-        next_button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // passer la personne mais garder la possibilité de l'afficher par la suite
-
-                Intent myIntent = new Intent(BrowserActivity.this, BrowserActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putInt("id", ID);
-                bundle.putInt("index", setNextIndex(index, users.length));
-                bundle.putInt("mode", mode);
-
-                myIntent.putExtras(bundle);
-
-                finish();
-                startActivity(myIntent);
-            }
-        });
 
     }
 
     public UserTable[] getOtherUsers(DatabaseHelper db) {
         ArrayList<UserTable> users = new ArrayList<UserTable>();
 
+        // MODE BROWSER "ALL"
         if(BrowserActivity.this.getMode() == 1) {
 
             ArrayList<Integer> rel_ids = new ArrayList<Integer>();
@@ -216,12 +235,26 @@ public class BrowserActivity extends AppCompatActivity {
             }
             return tab;
         }
-        // A MODIFIER
-        else if(this.mode == 2) {
+        // MODE DEMANDES
+        else if(BrowserActivity.this.getMode() == 2) {
+
+            ArrayList<Integer> rel_ids = new ArrayList<Integer>();
+
+            SQLiteDatabase myDB = db.open();
+            Cursor cursor = myDB.rawQuery("SELECT ID_from FROM relations WHERE ID_to = " + BrowserActivity.this.getID() + " AND EtatReq = 0", null);
+            if(cursor.moveToFirst()) {
+                for(int i = 0 ; i < cursor.getCount() ; i++) {
+                    rel_ids.add(cursor.getInt(0));
+                    cursor.moveToNext();
+                }
+            }
+
             int i = 1;
             while(db.getUser(i) != null) {
-                if(i != this.ID) {
-                    users.add(db.getUser(i));
+                for(int j = 0 ; j < rel_ids.size() ; j++) {
+                    if(db.getUser(i).getId() == rel_ids.get(j)) {
+                        users.add(db.getUser(i));
+                    }
                 }
                 i++;
             }
@@ -231,6 +264,7 @@ public class BrowserActivity extends AppCompatActivity {
                 tab[j] = users.get(j);
             }
             return tab;
+
         }
 
 
