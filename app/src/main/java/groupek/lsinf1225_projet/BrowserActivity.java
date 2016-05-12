@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -61,8 +62,21 @@ public class BrowserActivity extends AppCompatActivity {
 
         DatabaseHelper db = new DatabaseHelper(BrowserActivity.this);
 
+
         this.users = getOtherUsers(db);
-        final UserTable user = users[index];
+
+        UserTable temp;
+        try {
+            temp = users[index];
+        }
+        catch(ArrayIndexOutOfBoundsException e){
+            Toast.makeText(BrowserActivity.this, "Plus d'utilisateurs disponible !", Toast.LENGTH_LONG).show();
+            temp = new UserTable();
+            temp.setNom("");
+            temp.setPrenom("");
+        }
+
+        final UserTable user = temp;
 
         // PhotoTable[] userPhotos = db.getAllPhotos(user.getId());
 

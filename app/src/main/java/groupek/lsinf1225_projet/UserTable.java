@@ -74,6 +74,10 @@ public class UserTable {
         this.cacherFacebook = false;
     }
 
+    public UserTable() {
+
+    }
+
     public int getId() {
         return id;
     }
