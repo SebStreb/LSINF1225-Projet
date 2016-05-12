@@ -32,20 +32,7 @@ public class MessagerieActivity extends AppCompatActivity {
 
         /*    Get friends    */
         DatabaseHelper db = new DatabaseHelper(this);
-        String[] amis = db.listeAmis(this.ID);
-
-        /*    Restrict from the search    */
-        if (getIntent().hasExtra("restrict")) {
-            String restrict = b.getString("restrict");
-            if (restrict != null) {
-                ArrayList<String> newAmis = new ArrayList<String>();
-                for (int i = 0; i < amis.length; i++) {
-                    if (amis[i].contains(restrict))
-                        newAmis.add(amis[i]);
-                }
-                amis = newAmis.toArray(new String[newAmis.size()]);
-            }
-        }
+        final String[] amis = db.listeAmis(this.ID);
 
         /*    Show friends    */
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -78,14 +65,18 @@ public class MessagerieActivity extends AppCompatActivity {
         search.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
-                if (!hasFocus) {
-                    CharSequence query = search.getQuery();
-                    Intent intent = new Intent(MessagerieActivity.this, MessagerieActivity.class);
-                    Bundle b = new Bundle();
-                    b.putInt("id", ID);
-                    b.putString("restrict", query.toString());
-                    intent.putExtras(b);
-                    startActivity(intent);
+                String restrict = search.getQuery().toString();
+                if (restrict != null) {
+                    ArrayList<String> newAmis = new ArrayList<String>();
+                    for (int i = 0; i < amis.length; i++) {
+                        if (amis[i].contains(restrict))
+                            newAmis.add(amis[i]);
+                    }
+                    String[] nAmis = newAmis.toArray(new String[newAmis.size()]);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(con,
+                            android.R.layout.simple_list_item_1, android.R.id.text1, nAmis);
+                    final ListView list = (ListView) findViewById(R.id.listView2);
+                    list.setAdapter(adapter);
                 }
             }
         });
