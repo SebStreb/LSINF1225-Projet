@@ -75,7 +75,7 @@ public class BrowserActivity extends AppCompatActivity {
             
             Intent myIntent = new Intent(BrowserActivity.this, MenuActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putInt("id", this.getID());
+            bundle.putInt("id", ID);
             myIntent.putExtras(bundle);
 
             finish();
@@ -145,8 +145,8 @@ public class BrowserActivity extends AppCompatActivity {
 
                     DatabaseHelper db = new DatabaseHelper(BrowserActivity.this);
                     removeUserFromAnyList(db, ID, user.getId());
-                    Intent myIntent = new Intent(BrowserActivity.this, BrowserActivity.class);
 
+                    Intent myIntent = new Intent(BrowserActivity.this, BrowserActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putInt("id", ID);
                     bundle.putInt("index", 0);
